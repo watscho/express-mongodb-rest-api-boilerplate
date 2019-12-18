@@ -13,14 +13,14 @@ const { verifyRequestService } = require('@app/module/auth/service')
 const UserModel = require('@app/module/auth/user')
 
 class AuthController {
-  user(req, res) {
+  user (req, res) {
     const { context: { user } } = req
 
     return res.status(200)
       .json(user)
   }
 
-  async signIn(req, res) {
+  async signIn (req, res) {
     try {
       const { body: { email, password } } = req
 
@@ -49,7 +49,7 @@ class AuthController {
     }
   }
 
-  async signUp(req, res) {
+  async signUp (req, res) {
     try {
       const { body: { email, password }, i18n } = req
 
@@ -84,7 +84,7 @@ class AuthController {
     }
   }
 
-  async logout(req, res) {
+  async logout (req, res) {
     try {
       const { context: { user, accessToken } } = req
 
@@ -102,7 +102,7 @@ class AuthController {
     }
   }
 
-  async verifyRequest(req, res) {
+  async verifyRequest (req, res) {
     try {
       const { context: { user } } = req
 
@@ -117,7 +117,7 @@ class AuthController {
     }
   }
 
-  async verify(req, res) {
+  async verify (req, res) {
     try {
       const { body: { token } } = req
 
@@ -156,7 +156,7 @@ class AuthController {
     }
   }
 
-  async resetPassword(req, res) {
+  async resetPassword (req, res) {
     try {
       const { body: { email } } = req
 
@@ -189,7 +189,7 @@ class AuthController {
     }
   }
 
-  async newPassword(req, res) {
+  async newPassword (req, res) {
     try {
       const { body: { token, newPassword } } = req
 
@@ -228,7 +228,7 @@ class AuthController {
     }
   }
 
-  async changePassword(req, res) {
+  async changePassword (req, res) {
     try {
       const { body: { currentPassword, newPassword }, context: { user } } = req
 
@@ -251,7 +251,7 @@ class AuthController {
     }
   }
 
-  async updateUser(req, res) {
+  async updateUser (req, res) {
     try {
       const { body: { email, firstName, lastName }, context: { user } } = req
 
@@ -294,7 +294,7 @@ class AuthController {
     }
   }
 
-  async switchLocale(req, res) {
+  async switchLocale (req, res) {
     try {
       const { body: { locale }, context: { user } } = req
 
@@ -309,7 +309,7 @@ class AuthController {
     }
   }
 
-  static getInstance() {
+  static getInstance () {
     if (!this.instance) {
       this.instance = new this()
     }

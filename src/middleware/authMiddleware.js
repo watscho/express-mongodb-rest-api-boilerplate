@@ -1,5 +1,5 @@
 class AuthMiddleware {
-  async isAuth(req, res, next) {
+  async isAuth (req, res, next) {
     const { context: { user } } = req
 
     if (!user) {
@@ -10,7 +10,7 @@ class AuthMiddleware {
     return next()
   }
 
-  async isGuest(req, res, next) {
+  async isGuest (req, res, next) {
     const { context: { user } } = req
 
     if (user) {
@@ -21,7 +21,7 @@ class AuthMiddleware {
     return next()
   }
 
-  async isVerified(req, res, next) {
+  async isVerified (req, res, next) {
     const { context: { user: { account: { verification: { verified } } } } } = req
 
     if (!verified) {
@@ -32,7 +32,7 @@ class AuthMiddleware {
     return next()
   }
 
-  async isUnverfied(req, res, next) {
+  async isUnverfied (req, res, next) {
     const { context: { user: { account: { verification: { verified } } } } } = req
 
     if (verified) {
@@ -43,7 +43,7 @@ class AuthMiddleware {
     return next()
   }
 
-  static getInstance() {
+  static getInstance () {
     if (!this.instance) {
       this.instance = new this()
     }
