@@ -1,9 +1,11 @@
+const HttpStatus = require('http-status-codes')
+
 class AuthMiddleware {
   async isAuth (req, res, next) {
     const { context: { user } } = req
 
     if (!user) {
-      return res.status(401)
+      return res.status(HttpStatus.UNAUTHORIZED)
         .json({ error: 'You must be authorized.' })
     }
 
@@ -14,7 +16,7 @@ class AuthMiddleware {
     const { context: { user } } = req
 
     if (user) {
-      return res.status(403)
+      return res.status(HttpStatus.FORBIDDEN)
         .json({ error: 'You have already authorized.' })
     }
 
@@ -25,7 +27,7 @@ class AuthMiddleware {
     const { context: { user: { account: { verification: { verified } } } } } = req
 
     if (!verified) {
-      return res.status(403)
+      return res.status(HttpStatus.FORBIDDEN)
         .json({ error: 'You must be verified.' })
     }
 
@@ -36,7 +38,7 @@ class AuthMiddleware {
     const { context: { user: { account: { verification: { verified } } } } } = req
 
     if (verified) {
-      return res.status(403)
+      return res.status(HttpStatus.FORBIDDEN)
         .json({ error: 'You have already verified.' })
     }
 

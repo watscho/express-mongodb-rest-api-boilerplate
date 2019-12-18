@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const HttpStatus = require('http-status-codes')
 
 require('module-alias/register')
 require('dotenv').config()
@@ -17,7 +18,7 @@ app.use(
   express.json(),
   cors({
     origin: process.env.CLIENT_URL,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: HttpStatus.OK
   }),
   i18nextMiddleware.handle(i18next),
   authentication,
@@ -26,7 +27,7 @@ app.use(
 app.use(routes)
 
 app.use('*', (req, res) => {
-  res.status(404)
+  res.status(HttpStatus.NOT_FOUND)
     .send('404 Not Found')
 })
 

@@ -1,4 +1,5 @@
 const validator = require('validator')
+const HttpStatus = require('http-status-codes')
 
 class UserValidator {
   async signIn (req, res, next) {
@@ -6,12 +7,12 @@ class UserValidator {
     const { body: { password } } = req
 
     if (!email) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: email' })
     }
 
     if (!password) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: password' })
     }
 
@@ -33,12 +34,12 @@ class UserValidator {
     Object.assign(req.body, { email })
 
     if (!email || !validator.isEmail(email, { allow_utf8_local_part: false })) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: email' })
     }
 
     if (!password || !validator.isLength(password, { min: 6 })) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: password' })
     }
 
@@ -49,7 +50,7 @@ class UserValidator {
     const { body: { token } } = req
 
     if (!token) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: token' })
     }
 
@@ -60,7 +61,7 @@ class UserValidator {
     let { body: { email } } = req
 
     if (!email) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: email' })
     }
 
@@ -76,17 +77,17 @@ class UserValidator {
     const { body: { token, newPassword } } = req
 
     if (!token) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: token' })
     }
 
     if (!newPassword) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: newPassword' })
     }
 
     if (!validator.isLength(newPassword, { min: 6 })) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: newPassword' })
     }
 
@@ -97,17 +98,17 @@ class UserValidator {
     const { body: { currentPassword, newPassword } } = req
 
     if (!currentPassword) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: currentPassword' })
     }
 
     if (!newPassword) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: newPassword' })
     }
 
     if (!validator.isLength(newPassword, { min: 6 })) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: newPassword' })
     }
 
@@ -124,17 +125,17 @@ class UserValidator {
     Object.assign(req.body, { email })
 
     if (!email || !validator.isEmail(email, { allow_utf8_local_part: false })) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: email' })
     }
 
     if (!firstName || !validator.isLength(firstName, { min: 2 })) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: firstName' })
     }
 
     if (!lastName || !validator.isLength(lastName, { min: 2 })) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: lastName' })
     }
 
@@ -145,7 +146,7 @@ class UserValidator {
     const { body: { locale }, i18n: { options: { preload: locales } } } = req
 
     if (!locale || !locales.includes(locale)) {
-      return res.status(400)
+      return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: locale' })
     }
 
