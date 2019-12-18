@@ -1,7 +1,7 @@
 {
   "name": "express-mongodb-rest-api-boilerplate",
   "version": "1.1.0",
-  "description": "A boilerplate for Node.js applications / Authentication from scratch - express, mongodb - Rest API.",
+  "description": "A boilerplate for Node.js apps / Rest API / Authentication from scratch - express, mongodb (mongoose).",
   "main": "./src",
   "repository": {
     "type": "git",
