@@ -141,18 +141,17 @@ yarn lint:write # with prefix --fix
 
 ## API Endpoints
 
-* GET: <http://localhost:8000/user> - Get current user
-* POST: <http://localhost:8000/sign-in> - Authorization
-* POST: <http://localhost:8000/sign-up> - Registration
-* POST: <http://localhost:8000/logout> - Logout
-* POST: <http://localhost:8000/verify-request> - Verification request
-* POST: <http://localhost:8000/verify> - Verify url
-* POST: <http://localhost:8000/reset-password> - Reset password
-* POST: <http://localhost:8000/new-password> - New password after password reset
-* POST: <http://localhost:8000/change-password> - Change password
-* POST: <http://localhost:8000/update-user> - Update user
-* POST: <http://localhost:8000/switch-locale> - Switch lang
-
+*  GET: <http://localhost:8000/user> - Get current user
+*  POST: <http://localhost:8000/sign-in> - Authorization
+*  POST: <http://localhost:8000/sign-up> - Registration
+*  POST: <http://localhost:8000/logout> - Logout
+*  POST: <http://localhost:8000/verify-request> - Verification request
+*  POST: <http://localhost:8000/verify> - Verify url
+*  POST: <http://localhost:8000/reset-password> - Reset password
+*  POST: <http://localhost:8000/new-password> - New password after password reset
+*  POST: <http://localhost:8000/change-password> - Change password
+*  POST: <http://localhost:8000/update-user> - Update user
+*  POST: <http://localhost:8000/switch-locale> - Switch lang
 
 **Note:** For any question [issues](https://github.com/watscho/express-mongodb-rest-api-boilerplate/issues)
 
