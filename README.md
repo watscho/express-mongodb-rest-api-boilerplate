@@ -1,5 +1,7 @@
 # [express-mongodb-rest-api-boilerplate](https://github.com/watscho/express-mongodb-rest-api-boilerplate)
 
+**Also [express-graphql-mongodb-boilerplate](https://github.com/watscho/express-graphql-mongodb-boilerplate) - GraphQL API Boilerplate**
+
 [![](https://img.shields.io/badge/author-@watscho-blue.svg)](https://www.linkedin.com/in/watscho) 
 [![](https://api.codacy.com/project/badge/Grade/f4ea86b0cf474e928d34f3723aed349e)](https://www.codacy.com/manual/watscho/express-mongodb-rest-api-boilerplate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=watscho/express-mongodb-rest-api-boilerplate&amp;utm_campaign=Badge_Grade)
 [![GitHub license](https://img.shields.io/github/license/watscho/express-mongodb-rest-api-boilerplate)](https://github.com/watscho/express-mongodb-rest-api-boilerplate/blob/master/LICENSE)
@@ -154,8 +156,6 @@ yarn lint:write # with prefix --fix
 *   POST: <http://localhost:8000/switch-locale> - Switch lang
 
 **Note:** For any question [issues](https://github.com/watscho/express-mongodb-rest-api-boilerplate/issues)
-
-## Also [express-graphql-mongodb-boilerplate](https://github.com/watscho/express-graphql-mongodb-boilerplate) - GraphQL API Boilerplate
 
 ## License
 
