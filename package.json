@@ -1,6 +1,6 @@
 {
   "name": "express-mongodb-rest-api-boilerplate",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A boilerplate for Node.js applications / Authentication from scratch - express, mongodb - Rest API.",
   "main": "./src",
   "repository": {
@@ -41,6 +41,7 @@
     "ejs": "^3.0.1",
     "email-templates": "^6.1.0",
     "express": "^5.0.0-alpha.7",
+    "http-status-codes": "^1.4.0",
     "i18next": "^19.0.2",
     "i18next-express-middleware": "^1.9.1",
     "ioredis": "^4.14.1",
