@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto-random-string')
 const moment = require('moment')
+const HttpStatus = require('http-status-codes')
 
 const redis = require('@app/redis')
 const {
@@ -16,7 +17,7 @@ class AuthController {
   user (req, res) {
     const { context: { user } } = req
 
-    return res.status(200)
+    return res.status(HttpStatus.OK)
       .json(user)
   }
 
@@ -26,13 +27,13 @@ class AuthController {
 
       const user = await UserModel.emailExist(email)
       if (!user) {
-        return res.status(400)
+        return res.status(HttpStatus.BAD_REQUEST)
           .json({ error: 'User not found.' })
       }
 
       const comparePassword = await user.comparePassword(password)
       if (!comparePassword) {
-        return res.status(400)
+        return res.status(HttpStatus.BAD_REQUEST)
           .json({ error: 'Password is incorrect.' })
       }
 
@@ -42,7 +43,7 @@ class AuthController {
         { expiresIn: process.env.JWT_EXPIRATION }
       )
 
-      return res.status(200)
+      return res.status(HttpStatus.OK)
         .json({ accessToken })
     } catch (error) {
       return Promise.reject(error)
@@ -55,7 +56,7 @@ class AuthController {
 
       let user = await UserModel.emailExist(email)
       if (user) {
-        return res.status(400)
+        return res.status(HttpStatus.BAD_REQUEST)
           .json({ error: 'Email has already been taken.' })
       }
 
@@ -77,7 +78,7 @@ class AuthController {
 
       verifyRequestMail(user, token)
 
-      return res.status(200)
+      return res.status(HttpStatus.OK)
         .json({ accessToken })
     } catch (error) {
       return Promise.reject(error)
@@ -95,7 +96,7 @@ class AuthController {
         process.env.REDIS_TOKEN_EXPIRY
       )
 
-      return res.status(200)
+      return res.status(HttpStatus.OK)
         .json({ succeed: true })
     } catch (error) {
       return Promise.reject(error)
@@ -110,7 +111,7 @@ class AuthController {
 
       verifyRequestMail(user, token)
 
-      return res.status(200)
+      return res.status(HttpStatus.OK)
         .json({ succeed: true })
     } catch (error) {
       return Promise.reject(error)
@@ -125,7 +126,7 @@ class AuthController {
         'account.verification.token': token
       })
       if (!user) {
-        return res.status(400)
+        return res.status(HttpStatus.BAD_REQUEST)
           .json({ error: 'Access Token is not valid or has expired.' })
       }
 
@@ -149,7 +150,7 @@ class AuthController {
 
       verifyMail(user)
 
-      return res.status(200)
+      return res.status(HttpStatus.OK)
         .json({ accessToken })
     } catch (error) {
       return Promise.reject(error)
@@ -162,7 +163,7 @@ class AuthController {
 
       const user = await UserModel.findOne({ email })
       if (!user) {
-        return res.status(400)
+        return res.status(HttpStatus.BAD_REQUEST)
           .json({ error: 'User not found.' })
       }
 
@@ -182,7 +183,7 @@ class AuthController {
 
       resetPasswordMail(user, token)
 
-      return res.status(200)
+      return res.status(HttpStatus.OK)
         .json({ succeed: true })
     } catch (error) {
       return Promise.reject(error)
@@ -197,7 +198,7 @@ class AuthController {
         'account.resetPassword.token': token
       })
       if (!user) {
-        return res.status(400)
+        return res.status(HttpStatus.BAD_REQUEST)
           .json({ error: 'Access Token is not valid or has expired.' })
       }
 
@@ -221,7 +222,7 @@ class AuthController {
         { expiresIn: process.env.JWT_EXPIRATION }
       )
 
-      return res.status(200)
+      return res.status(HttpStatus.OK)
         .json({ accessToken })
     } catch (error) {
       return Promise.reject(error)
@@ -234,7 +235,7 @@ class AuthController {
 
       const comparePassword = await user.comparePassword(currentPassword)
       if (!comparePassword) {
-        return res.status(400)
+        return res.status(HttpStatus.BAD_REQUEST)
           .json({ error: 'Current password is incorrect.' })
       }
 
@@ -244,7 +245,7 @@ class AuthController {
 
       await user.save()
 
-      return res.status(200)
+      return res.status(HttpStatus.OK)
         .json({ succeed: true })
     } catch (error) {
       return Promise.reject(error)
@@ -261,7 +262,7 @@ class AuthController {
       if (user.email !== email) {
         const userExist = await UserModel.findOne({ email })
         if (userExist) {
-          return res.status(400)
+          return res.status(HttpStatus.BAD_REQUEST)
             .json({ error: 'Email has already been taken.' })
         }
         verified = false
@@ -287,7 +288,7 @@ class AuthController {
         verifyRequestMail(user, token)
       }
 
-      return res.status(200)
+      return res.status(HttpStatus.OK)
         .json(user)
     } catch (error) {
       return Promise.reject(error)
@@ -302,7 +303,7 @@ class AuthController {
 
       await user.save()
 
-      return res.status(200)
+      return res.status(HttpStatus.OK)
         .json(user)
     } catch (error) {
       return Promise.reject(error)
