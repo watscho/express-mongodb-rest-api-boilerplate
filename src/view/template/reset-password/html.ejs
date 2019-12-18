@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="<%=locale%>">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><%=i18n.getFixedT(locale)('resetPassword')%></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      -webkit-font-smoothing: antialiased;
+      font-family: sans-serif;
+      font-size: 14px;
+      line-height: 100%;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    table {
+      width: 100%;
+      border: none;
+      border-collapse: separate;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }
+
+    table tr td {
+      padding: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <td>
+        <h1><%=i18n.getFixedT(locale)('resetPassword')%></h1>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="<%=clientUrl + '/example/' + token%>" target="_blank">
+          <%=i18n.getFixedT(locale)('followUrl')%>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Powered by <a href="https://github.com/watscho">watscho</a>.
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
