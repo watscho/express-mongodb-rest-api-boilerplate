@@ -1,7 +1,7 @@
 const validator = require('validator')
 
 class UserValidator {
-  async signIn(req, res, next) {
+  async signIn (req, res, next) {
     let { body: { email } } = req
     const { body: { password } } = req
 
@@ -23,7 +23,7 @@ class UserValidator {
     return next()
   }
 
-  async signUp(req, res, next) {
+  async signUp (req, res, next) {
     let { body: { email = '' } } = req
     const { body: { password } } = req
 
@@ -45,7 +45,7 @@ class UserValidator {
     return next()
   }
 
-  async verify(req, res, next) {
+  async verify (req, res, next) {
     const { body: { token } } = req
 
     if (!token) {
@@ -56,7 +56,7 @@ class UserValidator {
     return next()
   }
 
-  async resetPassword(req, res, next) {
+  async resetPassword (req, res, next) {
     let { body: { email } } = req
 
     if (!email) {
@@ -72,7 +72,7 @@ class UserValidator {
     return next()
   }
 
-  async newPassword(req, res, next) {
+  async newPassword (req, res, next) {
     const { body: { token, newPassword } } = req
 
     if (!token) {
@@ -93,7 +93,7 @@ class UserValidator {
     return next()
   }
 
-  async changePassword(req, res, next) {
+  async changePassword (req, res, next) {
     const { body: { currentPassword, newPassword } } = req
 
     if (!currentPassword) {
@@ -114,7 +114,7 @@ class UserValidator {
     return next()
   }
 
-  async updateUser(req, res, next) {
+  async updateUser (req, res, next) {
     let { body: { email = '' } } = req
     const { firstName, lastName } = req
 
@@ -141,7 +141,7 @@ class UserValidator {
     return next()
   }
 
-  async switchLocale(req, res, next) {
+  async switchLocale (req, res, next) {
     const { body: { locale }, i18n: { options: { preload: locales } } } = req
 
     if (!locale || !locales.includes(locale)) {
@@ -152,7 +152,7 @@ class UserValidator {
     return next()
   }
 
-  static getInstance() {
+  static getInstance () {
     if (!this.instance) {
       this.instance = new this()
     }
