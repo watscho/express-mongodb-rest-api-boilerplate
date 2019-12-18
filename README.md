@@ -155,6 +155,8 @@ yarn lint:write # with prefix --fix
 
 **Note:** For any question [issues](https://github.com/watscho/express-mongodb-rest-api-boilerplate/issues)
 
+## Also [express-graphql-mongodb-boilerplate](https://github.com/watscho/express-graphql-mongodb-boilerplate) - GraphQL API Boilerplate
+
 ## License
 
 This project is an open-source with an [MIT License](https://github.com/watscho/express-mongodb-rest-api-boilerplate/blob/master/LICENSE)
