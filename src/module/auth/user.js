@@ -37,6 +37,17 @@ userSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password)
 }
 
+userSchema.methods.toJSON = function () {
+  const obj = this.toObject()
+
+  delete obj.password
+  delete obj.resetPassword
+  delete obj.account.verification.token
+  delete obj.account.verification.expiresIn
+
+  return obj
+}
+
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
