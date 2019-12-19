@@ -81,12 +81,7 @@ class UserValidator {
         .json({ error: 'Error: token' })
     }
 
-    if (!newPassword) {
-      return res.status(HttpStatus.BAD_REQUEST)
-        .json({ error: 'Error: newPassword' })
-    }
-
-    if (!validator.isLength(newPassword, { min: 6 })) {
+    if (!newPassword || !validator.isLength(newPassword, { min: 6 })) {
       return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: newPassword' })
     }
@@ -102,12 +97,7 @@ class UserValidator {
         .json({ error: 'Error: currentPassword' })
     }
 
-    if (!newPassword) {
-      return res.status(HttpStatus.BAD_REQUEST)
-        .json({ error: 'Error: newPassword' })
-    }
-
-    if (!validator.isLength(newPassword, { min: 6 })) {
+    if (!newPassword || !validator.isLength(newPassword, { min: 6 })) {
       return res.status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Error: newPassword' })
     }
