@@ -18,7 +18,7 @@ class AuthController {
     const { context: { user } } = req
 
     return res.status(HttpStatus.OK)
-      .json(user)
+      .json({ user })
   }
 
   async signIn (req, res) {
@@ -289,7 +289,7 @@ class AuthController {
       }
 
       return res.status(HttpStatus.OK)
-        .json(user)
+        .json({ user })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -304,7 +304,7 @@ class AuthController {
       await user.save()
 
       return res.status(HttpStatus.OK)
-        .json(user)
+        .json({ user })
     } catch (error) {
       return Promise.reject(error)
     }
