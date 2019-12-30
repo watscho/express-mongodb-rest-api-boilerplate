@@ -2,14 +2,16 @@ FROM node:alpine
 
 WORKDIR /usr/src/app
 
-RUN npm i nodemon -g
+RUN apk add yarn
 
-COPY package*.json ./
+RUN yarn global add nodemon
 
-RUN npm i --only=development
+COPY package.json yarn.lock ./
+
+RUN yarn install
 
 COPY ./ ./
 
 EXPOSE 8000
 
-CMD ["npm", "run", "start:local"]
+CMD ["yarn", "start:local"]
