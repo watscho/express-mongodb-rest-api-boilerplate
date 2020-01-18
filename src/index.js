@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const HttpStatus = require('http-status-codes')
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser')
 
 require('module-alias/register')
 require('dotenv').config()
@@ -13,10 +13,10 @@ const { i18next, i18nextMiddleware } = require('@app/i18next')
 const authentication = require('@app/middleware/authentication')
 const routes = require('@app/route')
 
-const app = express();
+const app = express()
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(
   express.json(),
