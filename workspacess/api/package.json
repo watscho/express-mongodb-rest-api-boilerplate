@@ -1,38 +1,9 @@
 {
-  "name": "express-mongodb-rest-api-boilerplate",
-  "version": "3.0.0",
-  "description": "A boilerplate for Node.js apps / Rest API / Authentication from scratch - express, mongodb (mongoose).",
-  "main": "./src",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/watscho/express-mongodb-rest-api-boilerplate"
-  },
-  "bugs": "https://github.com/watscho/express-mongodb-rest-api-boilerplate/issues",
-  "keywords": [
-    "express",
-    "mongodb",
-    "mongoose",
-    "node",
-    "nodejs",
-    "authentication",
-    "scratch",
-    "boilerplate",
-    "authorization",
-    "docker",
-    "api",
-    "rest"
-  ],
-  "scripts": {
-    "start": "NODE_PATH=./src node ./src",
-    "start:local": "NODE_PATH=./src nodemon ./src",
-    "lint": "eslint --debug ./src",
-    "lint:write": "eslint --debug ./src --fix"
-  },
   "_moduleAliases": {
     "@app": "./src"
   },
   "author": "Watscho Aiwasov",
-  "license": "MIT",
+  "bugs": "https://github.com/watscho/express-mongodb-rest-api-boilerplate/issues",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -52,5 +23,34 @@
     "nodemailer": "^6.4.6",
     "validator": "^13.0.0",
     "winston": "^3.2.1"
-  }
+  },
+  "description": "A boilerplate for Node.js apps / Rest API / Authentication from scratch - express, mongodb (mongoose).",
+  "keywords": [
+    "express",
+    "mongodb",
+    "mongoose",
+    "node",
+    "nodejs",
+    "authentication",
+    "scratch",
+    "boilerplate",
+    "authorization",
+    "docker",
+    "api",
+    "rest"
+  ],
+  "license": "MIT",
+  "main": "./src",
+  "name": "express-mongodb-rest-api-boilerplate",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/watscho/express-mongodb-rest-api-boilerplate"
+  },
+  "scripts": {
+    "lint": "eslint --debug ./src",
+    "lint:write": "eslint --debug ./src --fix",
+    "start": "NODE_PATH=./src node ./src",
+    "start:local": "NODE_PATH=./src nodemon ./src"
+  },
+  "version": "3.0.0"
 }
