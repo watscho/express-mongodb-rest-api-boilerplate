@@ -21,14 +21,13 @@ app.use(
     optionsSuccessStatus: HttpStatus.OK
   }),
   i18nextMiddleware.handle(i18next),
-  authentication,
+  authentication
 )
 
 app.use(routes)
 
 app.use('*', (req, res) => {
-  res.status(HttpStatus.NOT_FOUND)
-    .send('404 Not Found')
+  res.status(HttpStatus.NOT_FOUND).send('404 Not Found')
 })
 
 app.listen(process.env.APP_PORT)
