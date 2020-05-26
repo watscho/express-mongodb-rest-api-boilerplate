@@ -1,56 +1,14 @@
 {
-  "name": "express-mongodb-rest-api-boilerplate",
   "version": "2.0.0",
-  "description": "A boilerplate for Node.js apps / Rest API / Authentication from scratch - express, mongodb (mongoose).",
-  "main": "./src",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/watscho/express-mongodb-rest-api-boilerplate"
-  },
-  "bugs": "https://github.com/watscho/express-mongodb-rest-api-boilerplate/issues",
-  "keywords": [
-    "express",
-    "mongodb",
-    "mongoose",
-    "node",
-    "nodejs",
-    "authentication",
-    "scratch",
-    "boilerplate",
-    "authorization",
-    "docker",
-    "api",
-    "rest"
-  ],
-  "scripts": {
-    "start": "NODE_PATH=./src node ./src",
-    "start:local": "NODE_PATH=./src nodemon ./src",
-    "lint": "eslint --debug ./src",
-    "lint:write": "eslint --debug ./src --fix"
-  },
-  "_moduleAliases": {
-    "@app": "./src"
-  },
-  "author": "Watscho Aiwasov",
   "license": "MIT",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "crypto-random-string": "^3.0.1",
-    "dotenv": "^8.2.0",
-    "ejs": "^3.0.1",
-    "email-templates": "^6.1.1",
-    "express": "^5.0.0-alpha.7",
-    "http-status-codes": "^1.4.0",
-    "i18next": "^19.0.2",
-    "i18next-express-middleware": "^1.9.1",
-    "ioredis": "^4.14.1",
-    "jsonwebtoken": "^8.5.1",
-    "module-alias": "^2.2.2",
-    "moment": "^2.24.0",
-    "mongoose": "^5.8.3",
-    "nodemailer": "^6.4.2",
-    "validator": "^12.1.0",
-    "winston": "^3.2.1"
+  "private": true,
+  "scripts": {
+    "update:version": "lerna version --no-push"
+  },
+  "workspaces": [
+    "workspaces/*"
+  ],
+  "devDependencies": {
+    "lerna": "^3.22.0"
   }
 }

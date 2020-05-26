@@ -1,8 +1,8 @@
 const crypto = require('crypto-random-string')
 const moment = require('moment')
 
-class UserService {
-  async verifyRequest (user) {
+const userService = {
+  verifyRequest: async user => {
     const token = crypto({ length: 48, type: 'url-safe' })
     const expiresIn = moment().add(7, 'days')
 
@@ -19,13 +19,6 @@ class UserService {
 
     return token
   }
-
-  static getInstance () {
-    if (!this.instance) {
-      this.instance = new this()
-    }
-    return this.instance
-  }
 }
 
-module.exports = UserService
+module.exports = userService

@@ -5,35 +5,36 @@ const moment = require('moment')
 const HttpStatus = require('http-status-codes')
 
 const redis = require('@app/redis')
-const {
-  verifyRequestMail,
-  verifyMail,
-  resetPasswordMail
-} = require('@app/module/auth/mail')
-const { verifyRequestService } = require('@app/module/auth/service')
+const { userMail } = require('@app/module/auth/mail')
+const { userService } = require('@app/module/auth/service')
 const UserModel = require('@app/module/auth/user')
 
-class AuthController {
-  user (req, res) {
-    const { context: { user } } = req
+const authController = {
+  user: (req, res) => {
+    const {
+      context: { user }
+    } = req
 
-    return res.status(HttpStatus.OK)
-      .json({ user })
-  }
+    return res.status(HttpStatus.OK).json({ user })
+  },
 
-  async signIn (req, res) {
+  signIn: async (req, res) => {
     try {
-      const { body: { email, password } } = req
+      const {
+        body: { email, password }
+      } = req
 
       const user = await UserModel.emailExist(email)
       if (!user) {
-        return res.status(HttpStatus.BAD_REQUEST)
+        return res
+          .status(HttpStatus.BAD_REQUEST)
           .json({ error: 'User not found.' })
       }
 
       const comparePassword = await user.comparePassword(password)
       if (!comparePassword) {
-        return res.status(HttpStatus.BAD_REQUEST)
+        return res
+          .status(HttpStatus.BAD_REQUEST)
           .json({ error: 'Password is incorrect.' })
       }
 
@@ -43,20 +44,23 @@ class AuthController {
         { expiresIn: process.env.JWT_EXPIRATION }
       )
 
-      return res.status(HttpStatus.OK)
-        .json({ accessToken })
+      return res.status(HttpStatus.OK).json({ accessToken })
     } catch (error) {
       return Promise.reject(error)
     }
-  }
+  },
 
-  async signUp (req, res) {
+  signUp: async (req, res) => {
     try {
-      const { body: { email, password }, i18n } = req
+      const {
+        body: { email, password },
+        i18n
+      } = req
 
       let user = await UserModel.emailExist(email)
       if (user) {
-        return res.status(HttpStatus.BAD_REQUEST)
+        return res
+          .status(HttpStatus.BAD_REQUEST)
           .json({ error: 'Email has already been taken.' })
       }
 
@@ -74,20 +78,21 @@ class AuthController {
         { expiresIn: process.env.JWT_EXPIRATION }
       )
 
-      const token = await verifyRequestService(user)
+      const token = await userService.verifyRequest(user)
 
-      verifyRequestMail(user, token)
+      userMail.verifyRequest(user, token)
 
-      return res.status(HttpStatus.OK)
-        .json({ accessToken })
+      return res.status(HttpStatus.OK).json({ accessToken })
     } catch (error) {
       return Promise.reject(error)
     }
-  }
+  },
 
-  async logout (req, res) {
+  logout: async (req, res) => {
     try {
-      const { context: { user, accessToken } } = req
+      const {
+        context: { user, accessToken }
+      } = req
 
       await redis.set(
         `expiredToken:${accessToken}`,
@@ -96,37 +101,40 @@ class AuthController {
         process.env.REDIS_TOKEN_EXPIRY
       )
 
-      return res.status(HttpStatus.OK)
-        .json({ succeed: true })
+      return res.status(HttpStatus.OK).json({ succeed: true })
     } catch (error) {
       return Promise.reject(error)
     }
-  }
+  },
 
-  async verifyRequest (req, res) {
+  verifyRequest: async (req, res) => {
     try {
-      const { context: { user } } = req
+      const {
+        context: { user }
+      } = req
 
-      const token = await verifyRequestService(user)
+      const token = await userService.verifyRequest(user)
 
-      verifyRequestMail(user, token)
+      userMail.verifyRequest(user, token)
 
-      return res.status(HttpStatus.OK)
-        .json({ succeed: true })
+      return res.status(HttpStatus.OK).json({ succeed: true })
     } catch (error) {
       return Promise.reject(error)
     }
-  }
+  },
 
-  async verify (req, res) {
+  verify: async (req, res) => {
     try {
-      const { body: { token } } = req
+      const {
+        body: { token }
+      } = req
 
       const user = await UserModel.findOne({
         'account.verification.token': token
       })
       if (!user) {
-        return res.status(HttpStatus.BAD_REQUEST)
+        return res
+          .status(HttpStatus.BAD_REQUEST)
           .json({ error: 'Access Token is not valid or has expired.' })
       }
 
@@ -148,22 +156,24 @@ class AuthController {
         { expiresIn: process.env.JWT_EXPIRATION }
       )
 
-      verifyMail(user)
+      userMail.verify(user)
 
-      return res.status(HttpStatus.OK)
-        .json({ accessToken })
+      return res.status(HttpStatus.OK).json({ accessToken })
     } catch (error) {
       return Promise.reject(error)
     }
-  }
+  },
 
-  async resetPassword (req, res) {
+  resetPassword: async (req, res) => {
     try {
-      const { body: { email } } = req
+      const {
+        body: { email }
+      } = req
 
       const user = await UserModel.findOne({ email })
       if (!user) {
-        return res.status(HttpStatus.BAD_REQUEST)
+        return res
+          .status(HttpStatus.BAD_REQUEST)
           .json({ error: 'User not found.' })
       }
 
@@ -181,24 +191,26 @@ class AuthController {
 
       await user.save()
 
-      resetPasswordMail(user, token)
+      userMail.resetPassword(user, token)
 
-      return res.status(HttpStatus.OK)
-        .json({ succeed: true })
+      return res.status(HttpStatus.OK).json({ succeed: true })
     } catch (error) {
       return Promise.reject(error)
     }
-  }
+  },
 
-  async newPassword (req, res) {
+  newPassword: async (req, res) => {
     try {
-      const { body: { token, newPassword } } = req
+      const {
+        body: { token, newPassword }
+      } = req
 
       const user = await UserModel.findOne({
         'account.resetPassword.token': token
       })
       if (!user) {
-        return res.status(HttpStatus.BAD_REQUEST)
+        return res
+          .status(HttpStatus.BAD_REQUEST)
           .json({ error: 'Access Token is not valid or has expired.' })
       }
 
@@ -222,20 +234,23 @@ class AuthController {
         { expiresIn: process.env.JWT_EXPIRATION }
       )
 
-      return res.status(HttpStatus.OK)
-        .json({ accessToken })
+      return res.status(HttpStatus.OK).json({ accessToken })
     } catch (error) {
       return Promise.reject(error)
     }
-  }
+  },
 
-  async changePassword (req, res) {
+  changePassword: async (req, res) => {
     try {
-      const { body: { currentPassword, newPassword }, context: { user } } = req
+      const {
+        body: { currentPassword, newPassword },
+        context: { user }
+      } = req
 
       const comparePassword = await user.comparePassword(currentPassword)
       if (!comparePassword) {
-        return res.status(HttpStatus.BAD_REQUEST)
+        return res
+          .status(HttpStatus.BAD_REQUEST)
           .json({ error: 'Current password is incorrect.' })
       }
 
@@ -245,24 +260,31 @@ class AuthController {
 
       await user.save()
 
-      return res.status(HttpStatus.OK)
-        .json({ succeed: true })
+      return res.status(HttpStatus.OK).json({ succeed: true })
     } catch (error) {
       return Promise.reject(error)
     }
-  }
+  },
 
-  async updateUser (req, res) {
+  updateUser: async (req, res) => {
     try {
-      const { body: { email, firstName, lastName }, context: { user } } = req
+      const {
+        body: { email, firstName, lastName },
+        context: { user }
+      } = req
 
-      let { account: { verification: { verified } } } = user,
+      let {
+          account: {
+            verification: { verified }
+          }
+        } = user,
         verifyRequest = false
 
       if (user.email !== email) {
         const userExist = await UserModel.findOne({ email })
         if (userExist) {
-          return res.status(HttpStatus.BAD_REQUEST)
+          return res
+            .status(HttpStatus.BAD_REQUEST)
             .json({ error: 'Email has already been taken.' })
         }
         verified = false
@@ -283,39 +305,33 @@ class AuthController {
       await user.save()
 
       if (verifyRequest) {
-        const token = await verifyRequestService(user)
+        const token = await userService.verifyRequest(user)
 
-        verifyRequestMail(user, token)
+        userMail.verifyRequest(user, token)
       }
 
-      return res.status(HttpStatus.OK)
-        .json({ user })
+      return res.status(HttpStatus.OK).json({ user })
     } catch (error) {
       return Promise.reject(error)
     }
-  }
+  },
 
-  async switchLocale (req, res) {
+  switchLocale: async (req, res) => {
     try {
-      const { body: { locale }, context: { user } } = req
+      const {
+        body: { locale },
+        context: { user }
+      } = req
 
       user.set({ locale })
 
       await user.save()
 
-      return res.status(HttpStatus.OK)
-        .json({ user })
+      return res.status(HttpStatus.OK).json({ user })
     } catch (error) {
       return Promise.reject(error)
     }
   }
-
-  static getInstance () {
-    if (!this.instance) {
-      this.instance = new this()
-    }
-    return this.instance
-  }
 }
 
-module.exports = AuthController
+module.exports = authController
