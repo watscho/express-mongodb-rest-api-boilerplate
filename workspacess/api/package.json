@@ -1,6 +1,6 @@
 {
   "name": "express-mongodb-rest-api-boilerplate",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A boilerplate for Node.js apps / Rest API / Authentication from scratch - express, mongodb (mongoose).",
   "main": "./src",
   "repository": {
@@ -37,7 +37,6 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "crypto-random-string": "^3.2.0",
-    "dotenv": "^8.2.0",
     "ejs": "^3.1.3",
     "email-templates": "^7.0.5",
     "express": "^5.0.0-alpha.8",
@@ -52,5 +51,8 @@
     "nodemailer": "^6.4.6",
     "validator": "^13.0.0",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
   }
 }
