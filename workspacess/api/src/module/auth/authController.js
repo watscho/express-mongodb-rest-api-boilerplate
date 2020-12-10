@@ -26,23 +26,17 @@ const authController = {
 
       const user = await UserModel.emailExist(email)
       if (!user) {
-        return res
-          .status(HttpStatus.BAD_REQUEST)
-          .json({ error: 'User not found.' })
+        return res.status(HttpStatus.BAD_REQUEST).json({ error: 'User not found.' })
       }
 
       const comparePassword = await user.comparePassword(password)
       if (!comparePassword) {
-        return res
-          .status(HttpStatus.BAD_REQUEST)
-          .json({ error: 'Password is incorrect.' })
+        return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Password is incorrect.' })
       }
 
-      const accessToken = jwt.sign(
-        { userId: user._id },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRATION }
-      )
+      const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRATION
+      })
 
       return res.status(HttpStatus.OK).json({ accessToken })
     } catch (error) {
@@ -59,9 +53,7 @@ const authController = {
 
       let user = await UserModel.emailExist(email)
       if (user) {
-        return res
-          .status(HttpStatus.BAD_REQUEST)
-          .json({ error: 'Email has already been taken.' })
+        return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Email has already been taken.' })
       }
 
       const hash = bcrypt.hashSync(password, 10)
@@ -72,11 +64,9 @@ const authController = {
         locale: i18n.language
       }).save()
 
-      const accessToken = jwt.sign(
-        { userId: user._id },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRATION }
-      )
+      const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRATION
+      })
 
       const token = await userService.verifyRequest(user)
 
@@ -94,12 +84,7 @@ const authController = {
         context: { user, accessToken }
       } = req
 
-      await redis.set(
-        `expiredToken:${accessToken}`,
-        user._id,
-        'EX',
-        process.env.REDIS_TOKEN_EXPIRY
-      )
+      await redis.set(`expiredToken:${accessToken}`, user._id, 'EX', process.env.REDIS_TOKEN_EXPIRY)
 
       return res.status(HttpStatus.OK).json({ succeed: true })
     } catch (error) {
@@ -150,11 +135,9 @@ const authController = {
 
       await user.save()
 
-      const accessToken = jwt.sign(
-        { userId: user._id },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRATION }
-      )
+      const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRATION
+      })
 
       userMail.verify(user)
 
@@ -172,9 +155,7 @@ const authController = {
 
       const user = await UserModel.findOne({ email })
       if (!user) {
-        return res
-          .status(HttpStatus.BAD_REQUEST)
-          .json({ error: 'User not found.' })
+        return res.status(HttpStatus.BAD_REQUEST).json({ error: 'User not found.' })
       }
 
       const token = crypto({ length: 48, type: 'url-safe' })
@@ -228,11 +209,9 @@ const authController = {
 
       await user.save()
 
-      const accessToken = jwt.sign(
-        { userId: user._id },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRATION }
-      )
+      const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRATION
+      })
 
       return res.status(HttpStatus.OK).json({ accessToken })
     } catch (error) {
@@ -249,9 +228,7 @@ const authController = {
 
       const comparePassword = await user.comparePassword(currentPassword)
       if (!comparePassword) {
-        return res
-          .status(HttpStatus.BAD_REQUEST)
-          .json({ error: 'Current password is incorrect.' })
+        return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Current password is incorrect.' })
       }
 
       const hash = bcrypt.hashSync(newPassword, 10)
@@ -283,9 +260,7 @@ const authController = {
       if (user.email !== email) {
         const userExist = await UserModel.findOne({ email })
         if (userExist) {
-          return res
-            .status(HttpStatus.BAD_REQUEST)
-            .json({ error: 'Email has already been taken.' })
+          return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Email has already been taken.' })
         }
         verified = false
         verifyRequest = true

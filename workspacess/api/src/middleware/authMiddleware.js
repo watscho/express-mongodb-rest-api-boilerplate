@@ -7,9 +7,7 @@ const authMiddleware = {
     } = req
 
     if (!user) {
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ error: 'You must be authorized.' })
+      return res.status(HttpStatus.UNAUTHORIZED).json({ error: 'You must be authorized.' })
     }
 
     return next()
@@ -21,9 +19,7 @@ const authMiddleware = {
     } = req
 
     if (user) {
-      return res
-        .status(HttpStatus.FORBIDDEN)
-        .json({ error: 'You have already authorized.' })
+      return res.status(HttpStatus.FORBIDDEN).json({ error: 'You have already authorized.' })
     }
 
     return next()
@@ -41,9 +37,7 @@ const authMiddleware = {
     } = req
 
     if (!verified) {
-      return res
-        .status(HttpStatus.FORBIDDEN)
-        .json({ error: 'You must be verified.' })
+      return res.status(HttpStatus.FORBIDDEN).json({ error: 'You must be verified.' })
     }
 
     return next()
@@ -61,9 +55,7 @@ const authMiddleware = {
     } = req
 
     if (verified) {
-      return res
-        .status(HttpStatus.FORBIDDEN)
-        .json({ error: 'You have already verified.' })
+      return res.status(HttpStatus.FORBIDDEN).json({ error: 'You have already verified.' })
     }
 
     return next()

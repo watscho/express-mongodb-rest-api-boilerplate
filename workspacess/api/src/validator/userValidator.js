@@ -15,9 +15,7 @@ const userValidator = {
     }
 
     if (!password) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ error: 'Error: password' })
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Error: password' })
     }
 
     email = validator.normalizeEmail(email)
@@ -46,9 +44,7 @@ const userValidator = {
     }
 
     if (!password || !validator.isLength(password, { min: 6 })) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ error: 'Error: password' })
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Error: password' })
     }
 
     return next()
@@ -93,9 +89,7 @@ const userValidator = {
     }
 
     if (!newPassword || !validator.isLength(newPassword, { min: 6 })) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ error: 'Error: newPassword' })
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Error: newPassword' })
     }
 
     return next()
@@ -107,15 +101,11 @@ const userValidator = {
     } = req
 
     if (!currentPassword) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ error: 'Error: currentPassword' })
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Error: currentPassword' })
     }
 
     if (!newPassword || !validator.isLength(newPassword, { min: 6 })) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ error: 'Error: newPassword' })
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Error: newPassword' })
     }
 
     return next()
@@ -137,15 +127,11 @@ const userValidator = {
     }
 
     if (!firstName || !validator.isLength(firstName, { min: 2 })) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ error: 'Error: firstName' })
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Error: firstName' })
     }
 
     if (!lastName || !validator.isLength(lastName, { min: 2 })) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ error: 'Error: lastName' })
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Error: lastName' })
     }
 
     return next()
@@ -160,9 +146,7 @@ const userValidator = {
     } = req
 
     if (!locale || !locales.includes(locale)) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ error: 'Error: locale' })
+      return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Error: locale' })
     }
 
     return next()
