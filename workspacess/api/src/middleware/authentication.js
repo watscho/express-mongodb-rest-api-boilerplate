@@ -7,7 +7,9 @@ const authentication = async (req, res, next) => {
   try {
     Object.assign(req, { context: {} })
 
-    const { headers: { authorization } } = req
+    const {
+      headers: { authorization }
+    } = req
     if (!authorization) {
       return next()
     }

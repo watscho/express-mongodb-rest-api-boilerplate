@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const HttpStatus = require('http-status-codes')
 
-require('module-alias/register')
+require('module-alias').addAlias('@app', `${__dirname}/`)
 require('dotenv').config()
 
 require('@app/service/logger')

@@ -1,6 +1,6 @@
 {
   "name": "express-mongodb-rest-api-boilerplate",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A boilerplate for Node.js apps / Rest API / Authentication from scratch - express, mongodb (mongoose).",
   "main": "./src",
   "repository": {
@@ -26,10 +26,9 @@
     "start": "cross-env NODE_PATH=./src node ./src",
     "start:local": "cross-env NODE_PATH=./src nodemon ./src",
     "lint": "eslint --debug ./src",
-    "lint:write": "eslint --debug ./src --fix"
-  },
-  "_moduleAliases": {
-    "@app": "./src"
+    "lint:fix": "eslint --debug ./src --fix",
+    "prettier": "prettier \"**/*.+(js|jsx|json|css|md)\"",
+    "prettier:fix": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
   },
   "author": "Watscho Aiwasov",
   "license": "MIT",
@@ -54,6 +53,10 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "eslint": "^7.15.0",
+    "prettier": "^2.2.1",
+    "eslint-config-prettier": "^6.14.0",
+    "eslint-plugin-prettier": "^3.1.4"
   }
 }
