@@ -1,4 +1,5 @@
 node_modules
+public
+.env
 *.log
-yarn.lock
 .DS_Store

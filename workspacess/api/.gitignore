@@ -1,5 +1,0 @@
-node_modules
-*.log
-yarn.lock
-.env
-.DS_Store

@@ -1,0 +1,1 @@
+export { authGuard } from './authGuard'
