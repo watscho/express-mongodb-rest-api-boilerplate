@@ -21,8 +21,7 @@ export const userService = {
       verified
     }).save({ session }),
 
-  getById: (id: string, selectedFields = '_id email countries') =>
-    User.findById(id).select(selectedFields),
+  getById: (userId: string) => User.findById(userId),
 
   getByEmail: (email: string) => User.findOne({ email }),
 
