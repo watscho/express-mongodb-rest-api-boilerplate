@@ -101,8 +101,8 @@ yarn prettier:write # with prefix --fix
 - POST: <http://localhost:8000/auth/password/reset> Reset Password
 - POST: <http://localhost:8000/auth/password/new/:accessToken> New Password By Reset
 - GET:  <http://localhost:8000/me> Get User
-- POST: <http://localhost:8000/verification/request> Verification Request
-- GET:  <http://localhost:8000/verification/:accessToken> Verify
+- POST: <http://localhost:8000/user/verification/request> Verification Request
+- GET:  <http://localhost:8000/user/verification/:accessToken> Verify
 - POST: <http://localhost:8000/user/update> Update User
 - POST: <http://localhost:8000/user/update/email> Update Email
 - POST: <http://localhost:8000/user/update/password> Update Password
