@@ -30,7 +30,6 @@ export const auth = (router: Router): void => {
 
   router.post(
     '/auth/password/new/:accessToken',
-    authGuard.isGuest,
     authValidation.newPassword,
     authController.newPassword
   )
