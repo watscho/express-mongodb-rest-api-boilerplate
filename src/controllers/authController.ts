@@ -276,6 +276,12 @@ export const authController = {
 
       const { accessToken } = jwtSign(user.id)
 
+      const userMail = new UserMail()
+
+      userMail.successfullyUpdatedPassword({
+        email: user.email
+      })
+
       await session.commitTransaction()
       session.endSession()
 
