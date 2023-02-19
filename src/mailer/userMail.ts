@@ -18,31 +18,6 @@ export class UserMail extends Mailer {
     }
   }
 
-  public async signUpByOneTimePassword({
-    email,
-    password
-  }: {
-    email: string
-    password: string
-  }) {
-    try {
-      await this.mailer.send({
-        template: 'signUpByOneTimePassword',
-        message: {
-          from: '"Sign Up" <no-replay@actdoit.com>',
-          to: email,
-          subject: 'Sign Up'
-        },
-        locals: {
-          email,
-          password
-        }
-      })
-    } catch (error) {
-      winston.error(error)
-    }
-  }
-
   public async resetPassword({
     email,
     accessToken
