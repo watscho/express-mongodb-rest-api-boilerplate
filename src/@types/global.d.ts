@@ -19,7 +19,6 @@ export declare global {
       MAIL_USER: string
       MAIL_PASSWORD: string
       MAIL_TPL_PATH: string
-      NODE_PATH: string
     }
   }
 }

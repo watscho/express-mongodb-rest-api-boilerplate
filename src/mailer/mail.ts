@@ -18,7 +18,7 @@ export abstract class Mailer {
   private initializeMailer() {
     this.mailer = new Email({
       views: {
-        root: path.join(process.env.NODE_PATH, process.env.MAIL_TPL_PATH),
+        root: path.join(__dirname, '..', process.env.MAIL_TPL_PATH),
         locals: {
           origin: process.env.ORIGIN,
           t: i18next.t
