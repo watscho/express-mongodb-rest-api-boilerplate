@@ -23,9 +23,12 @@
     "rest"
   ],
   "scripts": {
-    "start": "rm -rf ./public && cross-env NODE_ENV=production ts-node --files -r tsconfig-paths/register ./src",
-    "watch": "rm -rf ./public && cross-env ts-node-dev --files --respawn --inspect -r tsconfig-paths/register ./src",
-    "build": "cross-env NODE_ENV=production tsc && tsc-alias && cp .env ./public/.env",
+    "start": "npm run rm:public && cross-env NODE_ENV=production ts-node --files -r tsconfig-paths/register ./src",
+    "watch": "npm run rm:public && cross-env ts-node-dev --files --respawn --inspect -r tsconfig-paths/register ./src",
+    "build": "npm run rm:public && cross-env NODE_ENV=production tsc && tsc-alias && npm run copy:files",
+    "rm:public": "rm -rf ./public",
+    "copy:files": "cp .env ./public/.env && cp -R ./src/views ./public",
+    "seed": "ts-node --files -r tsconfig-paths/register ./src/seeds",
     "lint": "eslint --debug ./src",
     "lint:fix": "eslint --debug ./src --fix",
     "prettier": "prettier \"**/*.+(js|jsx|json|css|md)\"",
