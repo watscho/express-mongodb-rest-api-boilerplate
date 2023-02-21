@@ -204,6 +204,7 @@ export const userController = {
       })
 
       return res.status(StatusCodes.OK).json({
+        data: { firstName, lastName },
         message: ReasonPhrases.OK,
         status: StatusCodes.OK
       })
@@ -220,7 +221,7 @@ export const userController = {
   updateEmail: async (
     {
       context: { user },
-      body: { email }
+      body: { email, password }
     }: CombinedRequest<UserRequest, UpdateEmailPayload>,
     res: Response
   ) => {
@@ -240,6 +241,16 @@ export const userController = {
         return res.status(StatusCodes.CONFLICT).json({
           message: ReasonPhrases.CONFLICT,
           status: StatusCodes.CONFLICT
+        })
+      }
+
+      const currentUser = await userService.getById(user.id)
+
+      const comparePassword = currentUser?.comparePassword(password)
+      if (!comparePassword) {
+        return res.status(StatusCodes.FORBIDDEN).json({
+          message: ReasonPhrases.FORBIDDEN,
+          status: StatusCodes.FORBIDDEN
         })
       }
 
@@ -295,6 +306,7 @@ export const userController = {
       session.endSession()
 
       return res.status(StatusCodes.OK).json({
+        data: { email },
         message: ReasonPhrases.OK,
         status: StatusCodes.OK
       })
@@ -361,7 +373,7 @@ export const userController = {
       context: {
         user: { email }
       },
-      body: { currentPassword }
+      body: { password }
     }: CombinedRequest<UserRequest, DeleteProfilePayload>,
     res: Response
   ) => {
@@ -370,8 +382,7 @@ export const userController = {
     try {
       const user = await userService.getByEmail(email)
 
-      const comparePassword = user?.comparePassword(currentPassword)
-
+      const comparePassword = user?.comparePassword(password)
       if (!user || !comparePassword) {
         return res.status(StatusCodes.FORBIDDEN).json({
           message: ReasonPhrases.FORBIDDEN,

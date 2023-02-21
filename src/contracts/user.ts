@@ -35,7 +35,7 @@ export type UpdateProfilePayload = Required<
   Pick<IUser, 'firstName' | 'lastName'>
 >
 
-export type UpdateEmailPayload = Pick<IUser, 'email'>
+export type UpdateEmailPayload = Pick<IUser, 'email' | 'password'>
 
 export interface UpdatePasswordPayload {
   oldPassword: string
@@ -43,5 +43,5 @@ export interface UpdatePasswordPayload {
 }
 
 export interface DeleteProfilePayload {
-  currentPassword: string
+  password: string
 }

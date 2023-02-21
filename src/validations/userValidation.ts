@@ -103,7 +103,7 @@ export const userValidation = {
     next: NextFunction
   ) => {
     try {
-      if (!req.body.email) {
+      if (!req.body.email || !req.body.password) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: ReasonPhrases.BAD_REQUEST,
           status: StatusCodes.BAD_REQUEST
@@ -168,12 +168,12 @@ export const userValidation = {
   },
 
   deleteProfile: (
-    { body: { currentPassword } }: BodyRequest<DeleteProfilePayload>,
+    { body: { password } }: BodyRequest<DeleteProfilePayload>,
     res: Response,
     next: NextFunction
   ) => {
     try {
-      if (!currentPassword) {
+      if (!password) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: ReasonPhrases.BAD_REQUEST,
           status: StatusCodes.BAD_REQUEST
