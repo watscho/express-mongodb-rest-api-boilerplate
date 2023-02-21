@@ -298,7 +298,7 @@ export const userController = {
       userMail.successfullyUpdatedEmail({ email })
 
       userMail.verification({
-        email: user.email,
+        email,
         accessToken: cryptoString
       })
 
