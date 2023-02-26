@@ -1,4 +1,4 @@
-import { ClientSession } from 'mongoose'
+import { ClientSession, ObjectId } from 'mongoose'
 
 import { ResetPassword } from '@/models'
 import { createDateNow } from '@/utils/dates'
@@ -10,14 +10,14 @@ export const resetPasswordService = {
       accessToken,
       expiresIn
     }: {
-      userId: string
+      userId: ObjectId
       accessToken: string
       expiresIn: Date
     },
     session?: ClientSession
   ) =>
     new ResetPassword({
-      userId,
+      user: userId,
       accessToken,
       expiresIn
     }).save({ session }),
@@ -28,6 +28,6 @@ export const resetPasswordService = {
       expiresIn: { $gte: createDateNow() }
     }),
 
-  deleteManyByUserId: (userId: string, session?: ClientSession) =>
-    ResetPassword.deleteMany({ userId }, { session })
+  deleteManyByUserId: (userId: ObjectId, session?: ClientSession) =>
+    ResetPassword.deleteMany({ user: userId }, { session })
 }

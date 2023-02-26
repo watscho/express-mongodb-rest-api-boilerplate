@@ -4,7 +4,10 @@ import { IVerification } from '@/contracts/user'
 
 const schema = new Schema<IVerification>(
   {
-    userId: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
     email: String,
     accessToken: String,
     expiresIn: Date

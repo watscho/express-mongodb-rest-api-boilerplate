@@ -21,14 +21,14 @@ export const userService = {
       verified
     }).save({ session }),
 
-  getById: (userId: string) => User.findById(userId),
+  getById: (userId: ObjectId) => User.findById(userId),
 
   getByEmail: (email: string) => User.findOne({ email }),
 
   isExistByEmail: (email: string) => User.exists({ email }),
 
   updatePasswordByUserId: (
-    userId: string,
+    userId: ObjectId,
     password: string,
     session?: ClientSession
   ) => {
@@ -46,7 +46,7 @@ export const userService = {
   },
 
   updateVerificationAndEmailByUserId: (
-    userId: string,
+    userId: ObjectId,
     email: string,
     session?: ClientSession
   ) => {
@@ -64,7 +64,7 @@ export const userService = {
   },
 
   updateProfileByUserId: (
-    userId: string,
+    userId: ObjectId,
     { firstName, lastName }: { firstName: string; lastName: string },
     session?: ClientSession
   ) => {
@@ -82,7 +82,7 @@ export const userService = {
   },
 
   updateEmailByUserId: (
-    userId: string,
+    userId: ObjectId,
     email: string,
     session?: ClientSession
   ) => {
@@ -99,16 +99,16 @@ export const userService = {
     return User.updateOne(...params)
   },
 
-  deleteById: (userId: string, session?: ClientSession) =>
-    User.deleteOne({ userId }, { session }),
+  deleteById: (userId: ObjectId, session?: ClientSession) =>
+    User.deleteOne({ user: userId }, { session }),
 
-  pushResetPasswordIdByUserId: async (
+  addResetPasswordToUser: async (
     {
       userId,
       resetPasswordId
     }: {
-      userId: string
-      resetPasswordId: string
+      userId: ObjectId
+      resetPasswordId: ObjectId
     },
     session?: ClientSession
   ) => {
@@ -121,18 +121,18 @@ export const userService = {
     const user = await User.findOne({ _id: userId }, null, options)
 
     if (user) {
-      user.resetPasswords.push(resetPasswordId as unknown as ObjectId)
+      user.resetPasswords.push(resetPasswordId)
       await user.save({ session })
     }
   },
 
-  pushVerificationsIdByUserId: async (
+  addVerificationToUser: async (
     {
       userId,
       verificationId
     }: {
-      userId: string
-      verificationId: string
+      userId: ObjectId
+      verificationId: ObjectId
     },
     session?: ClientSession
   ) => {
@@ -145,7 +145,32 @@ export const userService = {
     const user = await User.findOne({ _id: userId }, null, options)
 
     if (user) {
-      user.verifications.push(verificationId as unknown as ObjectId)
+      user.verifications.push(verificationId)
+      await user.save({ session })
+    }
+  },
+
+  addMediaToUser: async (
+    {
+      userId,
+      mediaId
+    }: {
+      userId: ObjectId
+      mediaId: ObjectId
+    },
+    session?: ClientSession
+  ) => {
+    let options = {}
+
+    if (session) {
+      options = { session }
+    }
+
+    const user = await User.findOne({ _id: userId }, null, options)
+
+    if (user) {
+      user.media.push(mediaId)
+
       await user.save({ session })
     }
   }

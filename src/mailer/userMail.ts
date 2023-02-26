@@ -1,6 +1,6 @@
 import winston from 'winston'
 
-import { Mailer } from './mail'
+import { Mailer } from './mailer'
 
 export class UserMail extends Mailer {
   public async signUp({ email }: { email: string }) {

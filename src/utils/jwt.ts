@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken'
+import { ObjectId } from 'mongoose'
 
 import { AccessToken, JwtUser } from '@/contracts/jwt'
 
-export const jwtSign = (id: string): AccessToken => {
+export const jwtSign = (id: ObjectId): AccessToken => {
   const accessToken = jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRATION
   })

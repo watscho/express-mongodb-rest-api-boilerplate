@@ -1,8 +1,9 @@
-import path from 'path'
 import nodemailer, { Transporter } from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import Email from 'email-templates'
 import i18next from 'i18next'
+
+import { joinRelativeToMainPath } from '@/utils/paths'
 
 export abstract class Mailer {
   private transporter: Transporter<SMTPTransport.SentMessageInfo>
@@ -18,7 +19,7 @@ export abstract class Mailer {
   private initializeMailer() {
     this.mailer = new Email({
       views: {
-        root: path.join(__dirname, '..', process.env.MAIL_TPL_PATH),
+        root: joinRelativeToMainPath(process.env.MAIL_TPL_PATH),
         locals: {
           origin: process.env.ORIGIN,
           t: i18next.t

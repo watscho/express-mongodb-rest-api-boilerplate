@@ -4,7 +4,10 @@ import { IResetPassword } from '@/contracts/user'
 
 const schema = new Schema<IResetPassword>(
   {
-    userId: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
     accessToken: String,
     expiresIn: Date
   },

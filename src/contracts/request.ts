@@ -1,4 +1,5 @@
 import { Request } from 'express'
+import { ObjectId } from 'mongoose'
 
 export interface ContextRequest<T> extends Omit<Request, 'context'> {
   context: T
@@ -22,7 +23,7 @@ export interface CombinedRequest<
 
 export interface UserRequest {
   user: {
-    id: string
+    id: ObjectId
     email: string
     verified: boolean
   }

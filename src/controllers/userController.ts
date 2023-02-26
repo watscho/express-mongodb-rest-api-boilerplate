@@ -91,7 +91,7 @@ export const userController = {
           session
         )
 
-        await userService.pushVerificationsIdByUserId(
+        await userService.addVerificationToUser(
           {
             userId: user.id,
             verificationId: verification.id
@@ -149,14 +149,14 @@ export const userController = {
       session.startTransaction()
 
       await userService.updateVerificationAndEmailByUserId(
-        verification.userId,
+        verification.user,
         verification.email,
         session
       )
 
-      await verificationService.deleteManyByUserId(verification.userId, session)
+      await verificationService.deleteManyByUserId(verification.user, session)
 
-      const { accessToken } = jwtSign(verification.userId)
+      const { accessToken } = jwtSign(verification.user)
 
       const userMail = new UserMail()
 
@@ -285,7 +285,7 @@ export const userController = {
         )
       }
 
-      await userService.pushVerificationsIdByUserId(
+      await userService.addVerificationToUser(
         {
           userId: user.id,
           verificationId: verification.id

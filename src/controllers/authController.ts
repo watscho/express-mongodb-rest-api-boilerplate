@@ -101,7 +101,7 @@ export const authController = {
         session
       )
 
-      await userService.pushVerificationsIdByUserId(
+      await userService.addVerificationToUser(
         {
           userId: user.id,
           verificationId: verification.id
@@ -150,7 +150,7 @@ export const authController = {
     res: Response
   ) => {
     try {
-      await redis.client.set(`expiredToken:${accessToken}`, user.id, {
+      await redis.client.set(`expiredToken:${accessToken}`, `${user.id}`, {
         EX: process.env.REDIS_TOKEN_EXPIRATION,
         NX: true
       })
@@ -198,7 +198,7 @@ export const authController = {
         session
       )
 
-      await userService.pushResetPasswordIdByUserId(
+      await userService.addResetPasswordToUser(
         {
           userId: user.id,
           resetPasswordId: resetPassword.id
@@ -254,7 +254,7 @@ export const authController = {
         })
       }
 
-      const user = await userService.getById(resetPassword.userId)
+      const user = await userService.getById(resetPassword.user)
 
       if (!user) {
         return res.status(StatusCodes.NOT_FOUND).json({
@@ -267,7 +267,7 @@ export const authController = {
       const hashedPassword = await createHash(password)
 
       await userService.updatePasswordByUserId(
-        resetPassword.userId,
+        resetPassword.user,
         hashedPassword,
         session
       )

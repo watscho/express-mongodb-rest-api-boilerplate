@@ -17,6 +17,7 @@ export const authMiddleware = async (
     if (!accessToken) return next()
 
     const { id } = jwtVerify({ accessToken })
+
     if (!id) return next()
 
     const isAccessTokenExpired = await redis.client.get(

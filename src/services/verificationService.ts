@@ -1,4 +1,4 @@
-import { ClientSession } from 'mongoose'
+import { ClientSession, ObjectId } from 'mongoose'
 
 import { Verification } from '@/models'
 import { createDateNow } from '@/utils/dates'
@@ -11,7 +11,7 @@ export const verificationService = {
       accessToken,
       expiresIn
     }: {
-      userId: string
+      userId: ObjectId
       email: string
       accessToken: string
       expiresIn: Date
@@ -19,7 +19,7 @@ export const verificationService = {
     session?: ClientSession
   ) =>
     new Verification({
-      userId,
+      user: userId,
       email,
       accessToken,
       expiresIn
@@ -32,7 +32,7 @@ export const verificationService = {
       accessToken,
       expiresIn
     }: {
-      userId: string
+      userId: ObjectId
       email: string
       accessToken: string
       expiresIn: Date
@@ -40,8 +40,8 @@ export const verificationService = {
     session?: ClientSession
   ) => {
     const data = [
-      { userId, email },
-      { userId, email, accessToken, expiresIn }
+      { user: userId, email },
+      { user: userId, email, accessToken, expiresIn }
     ]
 
     let params = null
@@ -61,6 +61,6 @@ export const verificationService = {
       expiresIn: { $gte: createDateNow() }
     }),
 
-  deleteManyByUserId: (userId: string, session?: ClientSession) =>
-    Verification.deleteMany({ userId }, { session })
+  deleteManyByUserId: (userId: ObjectId, session?: ClientSession) =>
+    Verification.deleteMany({ user: userId }, { session })
 }

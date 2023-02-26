@@ -1,7 +1,8 @@
 import express, { Express } from 'express'
+import { join } from 'path'
 import 'dotenv/config'
 
-import '@/logger'
+import '@/infrastructure/logger'
 import { mongoose, redis } from '@/dataSources'
 import {
   corsMiddleware,
@@ -17,8 +18,13 @@ redis.run()
 const app: Express = express()
 
 app.use(
-  express.json(),
-  express.urlencoded({ extended: true }),
+  join('/', process.env.STORAGE_PATH),
+  express.static(join(__dirname, process.env.STORAGE_PATH))
+)
+
+app.use(
+  express.json({ limit: '10mb' }),
+  express.urlencoded({ limit: '10mb', extended: true }),
   corsMiddleware,
   i18nextHttpMiddleware.handle(i18next),
   authMiddleware,
