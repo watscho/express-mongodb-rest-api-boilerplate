@@ -2,15 +2,15 @@ import { join } from 'path'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
 
-import { handleSingleUploadImage } from '@/infrastructure/upload'
+import { uploadSingleImage } from '@/infrastructure/upload'
 
-export const multerMiddleware = (
+export const uploadSingleImageMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    handleSingleUploadImage(req, res, err => {
+    uploadSingleImage(req, res, err => {
       if (err || !req.file) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: ReasonPhrases.BAD_REQUEST,

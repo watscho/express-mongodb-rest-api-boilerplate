@@ -25,4 +25,4 @@ const upload = multer({
   fileFilter
 })
 
-export const handleSingleUploadImage = upload.single('file')
+export const uploadSingleImage = upload.single('file')
