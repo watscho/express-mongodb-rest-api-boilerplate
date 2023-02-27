@@ -46,7 +46,7 @@
     "@types/node": "18.8.3",
     "@types/nodemailer": "6.4.7",
     "@types/randomstring": "1.1.8",
-    "@types/sharp": "^0.31.1",
+    "@types/sharp": "0.31.1",
     "@types/validator": "13.7.11",
     "@typescript-eslint/eslint-plugin": "5.39.0",
     "@typescript-eslint/parser": "5.39.0",

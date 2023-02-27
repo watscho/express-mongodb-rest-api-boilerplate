@@ -8,7 +8,7 @@ import { ContextRequest, UserRequest } from '@/contracts/request'
 import { startSession } from 'mongoose'
 
 export const mediaController = {
-  create: async (
+  imageUpload: async (
     { context: { user }, file }: ContextRequest<UserRequest>,
     res: Response
   ) => {

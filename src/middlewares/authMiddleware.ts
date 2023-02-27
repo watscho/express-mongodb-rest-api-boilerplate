@@ -17,17 +17,14 @@ export const authMiddleware = async (
     if (!accessToken) return next()
 
     const { id } = jwtVerify({ accessToken })
-
     if (!id) return next()
 
     const isAccessTokenExpired = await redis.client.get(
       `expiredToken:${accessToken}`
     )
-
     if (isAccessTokenExpired) return next()
 
     const user = await userService.getById(id)
-
     if (!user) return next()
 
     Object.assign(req, {
