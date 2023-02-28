@@ -20,9 +20,8 @@ export interface IUser {
   firstName?: string
   lastName?: string
   verified: boolean
-  verifications: ObjectId[]
-  resetPasswords: ObjectId[]
-  media: ObjectId[]
+  verifications?: ObjectId[]
+  resetPasswords?: ObjectId[]
 }
 
 export interface IUserMethods {

@@ -14,8 +14,7 @@ export const mediaService = {
       destination,
       filename,
       path,
-      size,
-      user
+      size
     }: MediaFileUploadRequest,
     session?: ClientSession
   ) =>
@@ -26,8 +25,7 @@ export const mediaService = {
       destination,
       filename,
       path,
-      size,
-      user
+      size
     }).save({ session }),
 
   deleteById: (mediaId: ObjectId, session?: ClientSession) =>

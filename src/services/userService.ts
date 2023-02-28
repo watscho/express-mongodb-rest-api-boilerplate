@@ -121,6 +121,9 @@ export const userService = {
     const user = await User.findOne({ _id: userId }, null, options)
 
     if (user) {
+      if (!user.resetPasswords) {
+        user.resetPasswords = []
+      }
       user.resetPasswords.push(resetPasswordId)
       await user.save({ session })
     }
@@ -145,32 +148,10 @@ export const userService = {
     const user = await User.findOne({ _id: userId }, null, options)
 
     if (user) {
+      if (!user.verifications) {
+        user.verifications = []
+      }
       user.verifications.push(verificationId)
-      await user.save({ session })
-    }
-  },
-
-  addMediaToUser: async (
-    {
-      userId,
-      mediaId
-    }: {
-      userId: ObjectId
-      mediaId: ObjectId
-    },
-    session?: ClientSession
-  ) => {
-    let options = {}
-
-    if (session) {
-      options = { session }
-    }
-
-    const user = await User.findOne({ _id: userId }, null, options)
-
-    if (user) {
-      user.media.push(mediaId)
-
       await user.save({ session })
     }
   }

@@ -16,12 +16,7 @@ const schema = new Schema<IMedia, MediaModel>(
       default: 0
     },
     refType: String,
-    refId: { type: Schema.Types.ObjectId },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    }
+    refId: { type: Schema.Types.ObjectId }
   },
   { timestamps: true }
 )

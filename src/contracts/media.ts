@@ -8,10 +8,9 @@ export interface IMedia {
   filename: string
   path: string
   size: number
-  orderColumn: number
-  refType: string
-  refId: ObjectId
-  user: ObjectId
+  orderColumn?: number
+  refType?: string
+  refId?: ObjectId
 }
 
 export type MediaFileUploadRequest = Omit<
