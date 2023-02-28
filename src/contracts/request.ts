@@ -1,4 +1,5 @@
 import { Request } from 'express'
+import { ParamsDictionary } from 'express-serve-static-core'
 import { ObjectId } from 'mongoose'
 
 export interface ContextRequest<T> extends Omit<Request, 'context'> {
@@ -9,8 +10,8 @@ export interface BodyRequest<T> extends Omit<Request, 'body'> {
   body: T
 }
 
-export interface ParamsRequest<T> extends Omit<Request, 'params'> {
-  params: T
+export interface ParamsRequest<T> extends Request {
+  params: T & ParamsDictionary
 }
 
 export interface CombinedRequest<

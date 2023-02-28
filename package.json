@@ -41,6 +41,7 @@
     "@types/cors": "2.8.12",
     "@types/email-templates": "10.0.1",
     "@types/express": "4.17.14",
+    "@types/express-serve-static-core": "4.17.33",
     "@types/jsonwebtoken": "8.5.9",
     "@types/multer": "1.4.7",
     "@types/node": "18.8.3",
