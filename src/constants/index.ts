@@ -8,6 +8,6 @@ export enum Mimetype {
   Png = 'image/png'
 }
 
-export enum ImageSizeInMB {
+export enum ImageSizeInMb {
   Ten = 10
 }

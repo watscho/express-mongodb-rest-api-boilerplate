@@ -1,7 +1,7 @@
 import { Request } from 'express'
 import multer, { FileFilterCallback } from 'multer'
 
-import { ImageSizeInMB, Mimetype } from '@/constants'
+import { ImageSizeInMb, Mimetype } from '@/constants'
 import { mbToBytes } from '@/utils/math'
 import { joinRelativeToMainPath } from '@/utils/paths'
 
@@ -21,7 +21,7 @@ const fileFilter = (
 
 const upload = multer({
   dest: joinRelativeToMainPath(process.env.STORAGE_PATH),
-  limits: { fileSize: mbToBytes(ImageSizeInMB.Ten) },
+  limits: { fileSize: mbToBytes(ImageSizeInMb.Ten) },
   fileFilter
 })
 
