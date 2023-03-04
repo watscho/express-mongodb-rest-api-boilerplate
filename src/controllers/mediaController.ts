@@ -14,7 +14,7 @@ export const mediaController = {
       const image = await new Image(media).sharp()
 
       return res.status(StatusCodes.OK).json({
-        data: { id: media.id, image },
+        data: { id: media.id, image: `${process.env.APP_URL}/${image}` },
         message: ReasonPhrases.OK,
         status: StatusCodes.OK
       })

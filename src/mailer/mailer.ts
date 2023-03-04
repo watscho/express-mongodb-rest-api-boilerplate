@@ -21,7 +21,7 @@ export abstract class Mailer {
       views: {
         root: joinRelativeToMainPath(process.env.MAIL_TPL_PATH),
         locals: {
-          origin: process.env.ORIGIN,
+          clientUrl: process.env.CLIENT_URL,
           t: i18next.t
         },
         options: { extension: 'ejs' }

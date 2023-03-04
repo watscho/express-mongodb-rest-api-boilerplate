@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title><%=t('resetPassword')%></title>
     <style>
       * {
@@ -42,7 +42,10 @@
       </tr>
       <tr>
         <td>
-          <a href="<%=`${origin}/reset-password/${accessToken}`%>" target="_blank">
+          <a
+            href="<%=`${clientUrl}/reset-password/${accessToken}`%>"
+            target="_blank"
+          >
             <%=t('followUp')%>
           </a>
         </td>
