@@ -11,3 +11,7 @@ export enum Mimetype {
 export enum ImageSizeInMb {
   Ten = 10
 }
+
+export enum MediaRefType {
+  User = 'User'
+}

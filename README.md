@@ -113,6 +113,7 @@ yarn prettier:write # with prefix --fix
 - POST: <http://localhost:8000/user/update/email> Update Email
 - POST: <http://localhost:8000/user/update/password> Update Password
 - POST: <http://localhost:8000/user/delete> Delete Profile
+- POST: <http://localhost:8000/user/update/avatar> Update Avatar
 - POST: <http://localhost:8000/media/image/upload> Image upload
 
 **Note:** For any question [issues](https://github.com/watscho/express-mongodb-rest-api-boilerplate/issues)

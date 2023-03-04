@@ -5,16 +5,19 @@ import winston from 'winston'
 import { mediaService } from '@/services'
 import { Image } from '@/infrastructure/image'
 import { ContextRequest, UserRequest } from '@/contracts/request'
+import { appUrl } from '@/utils/paths'
 
 export const mediaController = {
   imageUpload: async ({ file }: ContextRequest<UserRequest>, res: Response) => {
     try {
       const media = await mediaService.create(file as Express.Multer.File)
 
-      const image = await new Image(media).sharp()
+      const image = appUrl(
+        await new Image(media).sharp({ width: 150, height: 150 })
+      )
 
       return res.status(StatusCodes.OK).json({
-        data: { id: media.id, image: `${process.env.APP_URL}/${image}` },
+        data: { id: media.id, image },
         message: ReasonPhrases.OK,
         status: StatusCodes.OK
       })

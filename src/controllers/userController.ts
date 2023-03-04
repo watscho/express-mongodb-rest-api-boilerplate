@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { startSession } from 'mongoose'
+import { ObjectId, startSession } from 'mongoose'
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
 import winston from 'winston'
 
@@ -17,19 +17,25 @@ import {
   VerificationRequestPayload
 } from '@/contracts/user'
 import {
+  mediaService,
   resetPasswordService,
   userService,
   verificationService
 } from '@/services'
-import { ExpiresInDays } from '@/constants'
+import { ExpiresInDays, MediaRefType } from '@/constants'
 import { createDateAddDaysFromNow } from '@/utils/dates'
 import { createCryptoString } from '@/utils/cryptoString'
 import { UserMail } from '@/mailer'
 import { jwtSign } from '@/utils/jwt'
 import { createHash } from '@/utils/hash'
+import { Image } from '@/infrastructure/image'
+import { appUrl } from '@/utils/paths'
 
 export const userController = {
-  me: ({ context: { user } }: ContextRequest<UserRequest>, res: Response) => {
+  me: async (
+    { context: { user } }: ContextRequest<UserRequest>,
+    res: Response
+  ) => {
     if (!user) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: ReasonPhrases.NOT_FOUND,
@@ -37,8 +43,18 @@ export const userController = {
       })
     }
 
+    const media = await mediaService.findOneByRef({
+      refType: MediaRefType.User,
+      refId: user.id
+    })
+
+    let image
+    if (media) {
+      image = appUrl(await new Image(media).sharp({ width: 150, height: 150 }))
+    }
+
     return res.status(StatusCodes.OK).json({
-      data: user,
+      data: { ...user.toJSON(), image },
       message: ReasonPhrases.OK,
       status: StatusCodes.OK
     })
@@ -368,6 +384,35 @@ export const userController = {
     }
   },
 
+  updateAvatar: async (
+    {
+      context: { user },
+      body: { imageId }
+    }: CombinedRequest<UserRequest, { imageId: ObjectId }>,
+    res: Response
+  ) => {
+    try {
+      await userController.deleteUserImages({ userId: user.id })
+
+      await userController.attachUserToImage({
+        userId: user.id,
+        imageId
+      })
+
+      return res.status(StatusCodes.OK).json({
+        message: ReasonPhrases.OK,
+        status: StatusCodes.OK
+      })
+    } catch (error) {
+      winston.error(error)
+
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: ReasonPhrases.BAD_REQUEST,
+        status: StatusCodes.BAD_REQUEST
+      })
+    }
+  },
+
   deleteProfile: async (
     {
       context: {
@@ -421,5 +466,38 @@ export const userController = {
         status: StatusCodes.BAD_REQUEST
       })
     }
+  },
+
+  deleteUserImages: async ({ userId }: { userId: ObjectId }) => {
+    const images = await mediaService.findManyByRef({
+      refType: MediaRefType.User,
+      refId: userId
+    })
+
+    const promises = []
+
+    for (let i = 0; i < images.length; i++) {
+      promises.push(new Image(images[i]).deleteFile())
+    }
+
+    await Promise.all(promises)
+
+    await mediaService.deleteManyByRef({
+      refType: MediaRefType.User,
+      refId: userId
+    })
+  },
+
+  attachUserToImage: async ({
+    imageId,
+    userId
+  }: {
+    imageId: ObjectId
+    userId: ObjectId
+  }) => {
+    await mediaService.updateById(imageId, {
+      refType: MediaRefType.User,
+      refId: userId
+    })
   }
 }

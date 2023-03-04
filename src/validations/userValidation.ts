@@ -1,4 +1,5 @@
 import { NextFunction, Response } from 'express'
+import { ObjectId } from 'mongoose'
 import validator from 'validator'
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
 import winston from 'winston'
@@ -150,6 +151,30 @@ export const userValidation = {
         !newPassword ||
         !validator.isLength(newPassword, { min: 6, max: 48 })
       ) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          message: ReasonPhrases.BAD_REQUEST,
+          status: StatusCodes.BAD_REQUEST
+        })
+      }
+
+      return next()
+    } catch (error) {
+      winston.error(error)
+
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: ReasonPhrases.BAD_REQUEST,
+        status: StatusCodes.BAD_REQUEST
+      })
+    }
+  },
+
+  updateAvatar: (
+    { body: { imageId } }: BodyRequest<{ imageId: ObjectId }>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      if (!imageId) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: ReasonPhrases.BAD_REQUEST,
           status: StatusCodes.BAD_REQUEST

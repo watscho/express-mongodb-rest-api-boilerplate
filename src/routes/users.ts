@@ -38,6 +38,13 @@ export const users = (router: Router): void => {
   )
 
   router.post(
+    '/user/update/avatar',
+    authGuard.isAuth,
+    userValidation.updateAvatar,
+    userController.updateAvatar
+  )
+
+  router.post(
     '/user/delete',
     authGuard.isAuth,
     userValidation.deleteProfile,

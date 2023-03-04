@@ -7,3 +7,5 @@ export const joinRelativeToMainPath = (path = '') => {
 
   return join(dirname(filename), path)
 }
+
+export const appUrl = (path = '') => `${process.env.APP_URL}/${path}`

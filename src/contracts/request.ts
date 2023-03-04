@@ -1,6 +1,7 @@
 import { Request } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
-import { ObjectId } from 'mongoose'
+import { Document } from 'mongoose'
+import { IUser } from './user'
 
 export interface ContextRequest<T> extends Omit<Request, 'context'> {
   context: T
@@ -23,10 +24,6 @@ export interface CombinedRequest<
     Pick<ParamsRequest<Params>, 'params'> {}
 
 export interface UserRequest {
-  user: {
-    id: ObjectId
-    email: string
-    verified: boolean
-  }
+  user: Omit<IUser, 'id'> & Document
   accessToken: string
 }
