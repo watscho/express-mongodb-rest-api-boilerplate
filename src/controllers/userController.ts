@@ -394,9 +394,9 @@ export const userController = {
     try {
       await userController.deleteUserImages({ userId: user.id })
 
-      await userController.attachUserToImage({
-        userId: user.id,
-        imageId
+      await mediaService.updateById(imageId, {
+        refType: MediaRefType.User,
+        refId: user.id
       })
 
       return res.status(StatusCodes.OK).json({
@@ -483,19 +483,6 @@ export const userController = {
     await Promise.all(promises)
 
     await mediaService.deleteManyByRef({
-      refType: MediaRefType.User,
-      refId: userId
-    })
-  },
-
-  attachUserToImage: async ({
-    imageId,
-    userId
-  }: {
-    imageId: ObjectId
-    userId: ObjectId
-  }) => {
-    await mediaService.updateById(imageId, {
       refType: MediaRefType.User,
       refId: userId
     })
