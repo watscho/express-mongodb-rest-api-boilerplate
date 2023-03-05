@@ -53,9 +53,11 @@
 | eslint-plugin-unicorn   | More than 100 powerful ESLint rules                                                                                                                                                                                                                                                                                                                            |
 | prettier                | Prettier is an opinionated code formatter                                                                                                                                                                                                                                                                                                                      |
 
-<br>
+<hr/>
 
 ### Redis
+
+Download Redis for Windows from the official website [link](https://redis.io/docs/getting-started/installation/install-redis-on-windows/).
 
 _Mac (using [homebrew](http://brew.sh/)):_
 
@@ -68,6 +70,8 @@ _Linux:_
 ```bash
 sudo apt-get install redis-server
 ```
+
+### Setup
 
 You can install Node modules using either [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/), which are both package managers for Node.js.
 
