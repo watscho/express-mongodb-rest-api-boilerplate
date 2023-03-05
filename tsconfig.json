@@ -13,10 +13,10 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "removeComments": true,                           
+    "removeComments": true,
     "noImplicitAny": true,
     "paths": {
-      "@/*": ["*"],
+      "@/*": ["*"]
     },
     "baseUrl": "./src",
     "rootDir": "./src",
