@@ -4,10 +4,10 @@ import { StatusCodes, ReasonPhrases } from 'http-status-codes'
 import winston from 'winston'
 
 import {
-  CombinedRequest,
-  ContextRequest,
-  ParamsRequest,
-  UserRequest
+  ICombinedRequest,
+  IContextRequest,
+  IParamsRequest,
+  IUserRequest
 } from '@/contracts/request'
 import {
   DeleteProfilePayload,
@@ -33,7 +33,7 @@ import { appUrl } from '@/utils/paths'
 
 export const userController = {
   me: async (
-    { context: { user } }: ContextRequest<UserRequest>,
+    { context: { user } }: IContextRequest<IUserRequest>,
     res: Response
   ) => {
     if (!user) {
@@ -64,7 +64,7 @@ export const userController = {
     {
       context: { user },
       body: { email }
-    }: CombinedRequest<UserRequest, VerificationRequestPayload>,
+    }: ICombinedRequest<IUserRequest, VerificationRequestPayload>,
     res: Response
   ) => {
     const session = await startSession()
@@ -146,7 +146,7 @@ export const userController = {
   },
 
   verification: async (
-    { params }: ParamsRequest<{ accessToken: string }>,
+    { params }: IParamsRequest<{ accessToken: string }>,
     res: Response
   ) => {
     const session = await startSession()
@@ -207,7 +207,7 @@ export const userController = {
     {
       context: { user },
       body: { firstName, lastName }
-    }: CombinedRequest<UserRequest, UpdateProfilePayload>,
+    }: ICombinedRequest<IUserRequest, UpdateProfilePayload>,
     res: Response
   ) => {
     try {
@@ -238,7 +238,7 @@ export const userController = {
     {
       context: { user },
       body: { email, password }
-    }: CombinedRequest<UserRequest, UpdateEmailPayload>,
+    }: ICombinedRequest<IUserRequest, UpdateEmailPayload>,
     res: Response
   ) => {
     const session = await startSession()
@@ -347,7 +347,7 @@ export const userController = {
         user: { email }
       },
       body: { oldPassword, newPassword }
-    }: CombinedRequest<UserRequest, UpdatePasswordPayload>,
+    }: ICombinedRequest<IUserRequest, UpdatePasswordPayload>,
     res: Response
   ) => {
     try {
@@ -388,7 +388,7 @@ export const userController = {
     {
       context: { user },
       body: { imageId }
-    }: CombinedRequest<UserRequest, { imageId: ObjectId }>,
+    }: ICombinedRequest<IUserRequest, { imageId: ObjectId }>,
     res: Response
   ) => {
     try {
@@ -419,7 +419,7 @@ export const userController = {
         user: { email }
       },
       body: { password }
-    }: CombinedRequest<UserRequest, DeleteProfilePayload>,
+    }: ICombinedRequest<IUserRequest, DeleteProfilePayload>,
     res: Response
   ) => {
     const session = await startSession()

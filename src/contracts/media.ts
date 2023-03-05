@@ -13,11 +13,11 @@ export interface IMedia {
   refId?: ObjectId
 }
 
-export type ICreateMediaPayload = Omit<
+export type CreateMediaPayload = Omit<
   IMedia,
   'refId' | 'refType' | 'orderColumn'
 >
 
-export type IUpdateMediaPayload = Pick<IMedia, 'refId' | 'refType'>
+export type UpdateMediaPayload = Pick<IMedia, 'refId' | 'refType'>
 
 export type MediaModel = Model<IMedia>

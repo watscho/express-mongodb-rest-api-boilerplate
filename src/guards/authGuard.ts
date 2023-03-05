@@ -1,11 +1,11 @@
 import { NextFunction, Response } from 'express'
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
 
-import { ContextRequest, UserRequest } from '@/contracts/request'
+import { IContextRequest, IUserRequest } from '@/contracts/request'
 
 export const authGuard = {
   isAuth: (
-    { context: { user } }: ContextRequest<UserRequest>,
+    { context: { user } }: IContextRequest<IUserRequest>,
     res: Response,
     next: NextFunction
   ) => {
@@ -20,7 +20,7 @@ export const authGuard = {
   },
 
   isGuest: (
-    { context: { user } }: ContextRequest<UserRequest>,
+    { context: { user } }: IContextRequest<IUserRequest>,
     res: Response,
     next: NextFunction
   ) => {
@@ -39,7 +39,7 @@ export const authGuard = {
       context: {
         user: { verified }
       }
-    }: ContextRequest<UserRequest>,
+    }: IContextRequest<IUserRequest>,
     res: Response,
     next: NextFunction
   ) => {
@@ -58,7 +58,7 @@ export const authGuard = {
       context: {
         user: { verified }
       }
-    }: ContextRequest<UserRequest>,
+    }: IContextRequest<IUserRequest>,
     res: Response,
     next: NextFunction
   ) => {

@@ -1,7 +1,7 @@
 import { ClientSession, ObjectId } from 'mongoose'
 
 import { Media } from '@/models'
-import { ICreateMediaPayload, IUpdateMediaPayload } from '@/contracts/media'
+import { CreateMediaPayload, UpdateMediaPayload } from '@/contracts/media'
 import { MediaRefType } from '@/constants'
 
 export const mediaService = {
@@ -32,7 +32,7 @@ export const mediaService = {
       filename,
       path,
       size
-    }: ICreateMediaPayload,
+    }: CreateMediaPayload,
     session?: ClientSession
   ) =>
     new Media({
@@ -47,7 +47,7 @@ export const mediaService = {
 
   updateById: (
     mediaId: ObjectId,
-    { refType, refId }: IUpdateMediaPayload,
+    { refType, refId }: UpdateMediaPayload,
     session?: ClientSession
   ) => {
     const data = [{ _id: mediaId }, { refType, refId }]

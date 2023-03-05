@@ -4,11 +4,14 @@ import winston from 'winston'
 
 import { mediaService } from '@/services'
 import { Image } from '@/infrastructure/image'
-import { ContextRequest, UserRequest } from '@/contracts/request'
+import { IContextRequest, IUserRequest } from '@/contracts/request'
 import { appUrl } from '@/utils/paths'
 
 export const mediaController = {
-  imageUpload: async ({ file }: ContextRequest<UserRequest>, res: Response) => {
+  imageUpload: async (
+    { file }: IContextRequest<IUserRequest>,
+    res: Response
+  ) => {
     try {
       const media = await mediaService.create(file as Express.Multer.File)
 

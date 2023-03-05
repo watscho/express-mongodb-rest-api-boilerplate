@@ -17,10 +17,10 @@ import {
 } from '@/services'
 import { jwtSign } from '@/utils/jwt'
 import {
-  BodyRequest,
-  CombinedRequest,
-  ContextRequest,
-  UserRequest
+  IBodyRequest,
+  ICombinedRequest,
+  IContextRequest,
+  IUserRequest
 } from '@/contracts/request'
 import { createCryptoString } from '@/utils/cryptoString'
 import { createDateAddDaysFromNow } from '@/utils/dates'
@@ -30,7 +30,7 @@ import { redis } from '@/dataSources'
 
 export const authController = {
   signIn: async (
-    { body: { email, password } }: BodyRequest<SignInPayload>,
+    { body: { email, password } }: IBodyRequest<SignInPayload>,
     res: Response
   ) => {
     try {
@@ -62,7 +62,7 @@ export const authController = {
   },
 
   signUp: async (
-    { body: { email, password } }: BodyRequest<SignUpPayload>,
+    { body: { email, password } }: IBodyRequest<SignUpPayload>,
     res: Response
   ) => {
     const session = await startSession()
@@ -146,7 +146,7 @@ export const authController = {
   },
 
   signOut: async (
-    { context: { user, accessToken } }: ContextRequest<UserRequest>,
+    { context: { user, accessToken } }: IContextRequest<IUserRequest>,
     res: Response
   ) => {
     try {
@@ -168,7 +168,7 @@ export const authController = {
   },
 
   resetPassword: async (
-    { body: { email } }: BodyRequest<ResetPasswordPayload>,
+    { body: { email } }: IBodyRequest<ResetPasswordPayload>,
     res: Response
   ) => {
     const session = await startSession()
@@ -238,7 +238,7 @@ export const authController = {
     {
       body: { password },
       params
-    }: CombinedRequest<null, NewPasswordPayload, { accessToken: string }>,
+    }: ICombinedRequest<null, NewPasswordPayload, { accessToken: string }>,
     res: Response
   ) => {
     const session = await startSession()

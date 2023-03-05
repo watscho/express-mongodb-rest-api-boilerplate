@@ -4,7 +4,7 @@ import validator from 'validator'
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
 import winston from 'winston'
 
-import { BodyRequest } from '@/contracts/request'
+import { IBodyRequest } from '@/contracts/request'
 import {
   DeleteProfilePayload,
   UpdateEmailPayload,
@@ -15,7 +15,7 @@ import {
 
 export const userValidation = {
   verificationRequest: (
-    req: BodyRequest<VerificationRequestPayload>,
+    req: IBodyRequest<VerificationRequestPayload>,
     res: Response,
     next: NextFunction
   ) => {
@@ -57,7 +57,7 @@ export const userValidation = {
   },
 
   updateProfile: (
-    req: BodyRequest<UpdateProfilePayload>,
+    req: IBodyRequest<UpdateProfilePayload>,
     res: Response,
     next: NextFunction
   ) => {
@@ -99,7 +99,7 @@ export const userValidation = {
   },
 
   updateEmail: (
-    req: BodyRequest<UpdateEmailPayload>,
+    req: IBodyRequest<UpdateEmailPayload>,
     res: Response,
     next: NextFunction
   ) => {
@@ -141,7 +141,7 @@ export const userValidation = {
   },
 
   updatePassword: (
-    { body: { oldPassword, newPassword } }: BodyRequest<UpdatePasswordPayload>,
+    { body: { oldPassword, newPassword } }: IBodyRequest<UpdatePasswordPayload>,
     res: Response,
     next: NextFunction
   ) => {
@@ -169,7 +169,7 @@ export const userValidation = {
   },
 
   updateAvatar: (
-    { body: { imageId } }: BodyRequest<{ imageId: ObjectId }>,
+    { body: { imageId } }: IBodyRequest<{ imageId: ObjectId }>,
     res: Response,
     next: NextFunction
   ) => {
@@ -193,7 +193,7 @@ export const userValidation = {
   },
 
   deleteProfile: (
-    { body: { password } }: BodyRequest<DeleteProfilePayload>,
+    { body: { password } }: IBodyRequest<DeleteProfilePayload>,
     res: Response,
     next: NextFunction
   ) => {

@@ -1,9 +1,9 @@
 import { ObjectId } from 'mongoose'
 
-export interface JwtUser {
+export interface IJwtUser {
   id: ObjectId
 }
 
-export interface AccessToken {
+export interface IAccessToken {
   accessToken: string
 }

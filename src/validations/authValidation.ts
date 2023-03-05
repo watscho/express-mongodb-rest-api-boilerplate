@@ -9,11 +9,11 @@ import {
   SignUpPayload,
   NewPasswordPayload
 } from '@/contracts/auth'
-import { BodyRequest } from '@/contracts/request'
+import { IBodyRequest } from '@/contracts/request'
 
 export const authValidation = {
   signIn: (
-    req: BodyRequest<SignInPayload>,
+    req: IBodyRequest<SignInPayload>,
     res: Response,
     next: NextFunction
   ) => {
@@ -55,7 +55,7 @@ export const authValidation = {
   },
 
   signUp: (
-    req: BodyRequest<SignUpPayload>,
+    req: IBodyRequest<SignUpPayload>,
     res: Response,
     next: NextFunction
   ) => {
@@ -101,7 +101,7 @@ export const authValidation = {
   },
 
   resetPassword: (
-    req: BodyRequest<ResetPasswordPayload>,
+    req: IBodyRequest<ResetPasswordPayload>,
     res: Response,
     next: NextFunction
   ) => {
@@ -142,7 +142,7 @@ export const authValidation = {
   },
 
   newPassword: (
-    req: BodyRequest<NewPasswordPayload>,
+    req: IBodyRequest<NewPasswordPayload>,
     res: Response,
     next: NextFunction
   ) => {
