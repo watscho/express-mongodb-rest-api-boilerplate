@@ -120,6 +120,16 @@ yarn prettier:write # or npm run prettier:write - with prefix --fix
 
 If you're looking for an easy-to-use tool to test your email SMTP functionality, I highly recommend using [Mailcatcher](https://mailcatcher.me/). Mailcatcher is a simple SMTP server that catches all your outgoing emails and displays them in a web interface for easy viewing.
 
+## To install [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/) in [Visual Studio Code](https://code.visualstudio.com/), you can follow these steps:
+
+- Open Visual Studio Code and navigate to your project folder.
+- Press Ctrl + Shift + P (Windows) or Cmd + Shift + P (Mac) to open the Command Palette.
+- Type "Extensions: Install Extensions" and select the first option that appears.
+- In the search bar, type "Prettier" and select the first result that appears.
+- Click the "Install" button to install Prettier.
+- Repeat step 4 and 5 to install ESLint.
+- Alternatively, you can install Prettier and ESLint using the Visual Studio Code Marketplace:
+
 **Note:** For any question [issues](https://github.com/watscho/express-mongodb-rest-api-boilerplate/issues)
 
 ## License
