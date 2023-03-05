@@ -137,7 +137,6 @@ If you're looking for an easy-to-use tool to test your email SMTP functionality,
 - In the search bar, type "Prettier" and select the first result that appears.
 - Click the "Install" button to install Prettier.
 - Repeat step 4 and 5 to install ESLint.
-- Alternatively, you can install Prettier and ESLint using the Visual Studio Code Marketplace:
 
 ### API Structure
 
