@@ -19,6 +19,7 @@
 - Signed Out Access Token blacklisting by Redis
 - Image Upload (public storage, Many-to-many relationships)
 - Multi language by i18Next
+- E-mail notifications
 
 ### Package list
 
