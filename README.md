@@ -58,7 +58,7 @@
 
 ### Redis
 
-Download Redis for Windows from the official website [link](https://redis.io/docs/getting-started/installation/install-redis-on-windows/).
+Download Redis for Windows from the official [website](https://redis.io/docs/getting-started/installation/install-redis-on-windows/).
 
 _Mac (using [homebrew](http://brew.sh/)):_
 
