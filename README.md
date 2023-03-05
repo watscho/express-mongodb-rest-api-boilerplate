@@ -68,7 +68,7 @@ sudo apt-get install redis-server
 Firstly
 
 ```bash
-yarn install
+yarn install or npm install
 ```
 
 COPY .env.example to .env
@@ -80,23 +80,23 @@ cp .env.example .env
 ### API Start
 
 ```bash
-yarn start
-yarn watch # watch mode
-yarn build # production build
+yarn start # or npm start
+yarn watch # or npm run watch - watch mode
+yarn build # or npm run build - production build
 ```
 
 ### ESlint Start
 
 ```bash
-yarn lint
-yarn lint:write # with prefix --fix
+yarn lint # or npm run link
+yarn lint:write # or npm run lint:write - with prefix --fix
 ```
 
 ### Prettier Start
 
 ```bash
-yarn prettier
-yarn prettier:write # with prefix --fix
+yarn prettier # or npm run prettier
+yarn prettier:write # or npm run prettier:write - with prefix --fix
 ```
 
 ## API Endpoints
