@@ -1,18 +1,23 @@
 # [express-mongodb-rest-api-typescript-boilerplate](https://github.com/watscho/express-mongodb-rest-api-boilerplate)
 
-**Also [express-graphql-mongodb-boilerplate](https://github.com/watscho/express-graphql-mongodb-boilerplate) - GraphQL API Boilerplate - OLD SOURCE**
-
 [![](https://img.shields.io/badge/author-@watscho-blue.svg)](https://www.linkedin.com/in/watscho)
 [![](https://api.codacy.com/project/badge/Grade/f4ea86b0cf474e928d34f3723aed349e)](https://app.codacy.com/gh/watscho/express-mongodb-rest-api-boilerplate)
 [![GitHub license](https://img.shields.io/github/license/watscho/express-mongodb-rest-api-boilerplate)](https://github.com/watscho/express-mongodb-rest-api-boilerplate/blob/master/LICENSE)
 
 ## Authentication from scratch `TypeScript`
 
-### Sign In, Sign Up, Reset Password, Update Profile, Update Password, Update Email, Delete Profile.
-
-### Reset Password by E-mail, Verification Profile by E-mail, Signed Out Access Token blacklisting by Redis,
-
-### Image Upload, Multi language.
+- Sign In
+- Sign Up,
+- Reset Password
+- Update Profile
+- Update Password
+- Update Email
+- Delete Profile
+- Reset Password by E-mail
+- Verification Profile by E-mail
+- Signed Out Access Token blacklisting by Redis
+- Image Upload (for example user avatar)
+- Multi language by i18Next
 
 <br>
 
@@ -65,7 +70,7 @@ _Linux:_
 sudo apt-get install redis-server
 ```
 
-Firstly
+You can install Node modules using either [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/), which are both package managers for Node.js.
 
 ```bash
 yarn install # or npm install
