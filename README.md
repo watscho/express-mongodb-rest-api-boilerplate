@@ -12,11 +12,12 @@
 - Update Profile
 - Update Password
 - Update Email
+- Update User Avatar
 - Delete Profile
 - Reset Password by E-mail
 - Verification Profile by E-mail
 - Signed Out Access Token blacklisting by Redis
-- Image Upload (for example user avatar)
+- Image Upload (public storage, Many-to-many relationships)
 - Multi language by i18Next
 
 ### Package list
@@ -115,8 +116,8 @@ yarn prettier:write # or npm run prettier:write - with prefix --fix
 - POST: <http://localhost:8000/user/update> Update User
 - POST: <http://localhost:8000/user/update/email> Update Email
 - POST: <http://localhost:8000/user/update/password> Update Password
-- POST: <http://localhost:8000/user/delete> Delete Profile
 - POST: <http://localhost:8000/user/update/avatar> Update Avatar
+- POST: <http://localhost:8000/user/delete> Delete Profile
 - POST: <http://localhost:8000/media/image/upload> Image upload
 
 ### Mailcatcher
