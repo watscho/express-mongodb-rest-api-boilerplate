@@ -139,6 +139,115 @@ If you're looking for an easy-to-use tool to test your email SMTP functionality,
 - Repeat step 4 and 5 to install ESLint.
 - Alternatively, you can install Prettier and ESLint using the Visual Studio Code Marketplace:
 
+### API Structure
+
+```bash
+.
+├── src
+│  ├── @types
+│  │  └── global.d.ts
+│  ├── constants
+│  │  └── index.ts
+│  ├── contracts
+│  │  ├── auth.ts
+│  │  ├── jwt.ts
+│  │  ├── media.ts
+│  │  ├── request.ts
+│  │  └── user.ts
+│  ├── controllers
+│  │  ├── authController.ts
+│  │  ├── index.ts
+│  │  ├── mediaController.ts
+│  │  └── userController.ts
+│  ├── dataSources
+│  │  ├── index.ts
+│  │  ├── mongoose.ts
+│  │  └── redis.ts
+│  ├── guards
+│  │  ├── authGuard.ts
+│  │  └── index.ts
+│  ├── i18n
+│  │  ├── index.ts
+│  │  └── translations
+│  │     ├── en.json
+│  │     └── ka.json
+│  ├── index.ts
+│  ├── infrastructure
+│  │  ├── image.ts
+│  │  ├── logger.ts
+│  │  └── upload.ts
+│  ├── mailer
+│  │  ├── index.ts
+│  │  ├── mailer.ts
+│  │  └── userMail.ts
+│  ├── middlewares
+│  │  ├── authMiddleware.ts
+│  │  ├── corsMiddleware.ts
+│  │  ├── index.ts
+│  │  ├── notFoundMiddleware.ts
+│  │  └── uploadSingleImageMiddleware.ts
+│  ├── models
+│  │  ├── index.ts
+│  │  ├── media.ts
+│  │  ├── resetPassword.ts
+│  │  ├── user.ts
+│  │  └── verification.ts
+│  ├── routes
+│  │  ├── auth.ts
+│  │  ├── index.ts
+│  │  ├── media.ts
+│  │  └── users.ts
+│  ├── services
+│  │  ├── index.ts
+│  │  ├── mediaService.ts
+│  │  ├── resetPasswordService.ts
+│  │  ├── userService.ts
+│  │  └── verificationService.ts
+│  ├── storage
+│  │  └── public
+│  ├── templates
+│  │  ├── resetPassword
+│  │  │  └── html.ejs
+│  │  ├── signUp
+│  │  │  └── html.ejs
+│  │  ├── successfullyDeleted
+│  │  │  └── html.ejs
+│  │  ├── successfullyUpdatedEmail
+│  │  │  └── html.ejs
+│  │  ├── successfullyUpdatedPassword
+│  │  │  └── html.ejs
+│  │  ├── successfullyUpdatedProfile
+│  │  │  └── html.ejs
+│  │  ├── successfullyVerified
+│  │  │  └── html.ejs
+│  │  └── verification
+│  │     └── html.ejs
+│  ├── utils
+│  │  ├── cryptoString.ts
+│  │  ├── dates.ts
+│  │  ├── hash.ts
+│  │  ├── headers.ts
+│  │  ├── jwt.ts
+│  │  ├── maths.ts
+│  │  └── paths.ts
+│  └── validations
+│     ├── authValidation.ts
+│     ├── index.ts
+│     └── userValidation.ts
+├── .env
+├── .env.example
+├── .eslintrc
+├── .gitignore
+├── .nvmrc
+├── .prettierrc
+├── api-logs.log
+├── LICENSE
+├── package.json
+├── README.md
+├── tsconfig.json
+└── yarn.lock
+```
+
 **Note:** For any question [issues](https://github.com/watscho/express-mongodb-rest-api-boilerplate/issues)
 
 ## License
