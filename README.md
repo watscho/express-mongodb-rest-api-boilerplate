@@ -68,7 +68,7 @@ sudo apt-get install redis-server
 Firstly
 
 ```bash
-yarn install or npm install
+yarn install # or npm install
 ```
 
 COPY .env.example to .env
