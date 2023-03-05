@@ -19,8 +19,6 @@
 - Image Upload (for example user avatar)
 - Multi language by i18Next
 
-<br>
-
 ### Package list
 
 | Package                 | Description                                                                                                                                                                                                                                                                                                                                                    |
