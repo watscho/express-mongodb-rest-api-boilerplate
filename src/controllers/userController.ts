@@ -246,6 +246,7 @@ export const userController = {
     try {
       if (user.email === email) {
         return res.status(StatusCodes.OK).json({
+          data: { email },
           message: ReasonPhrases.OK,
           status: StatusCodes.OK
         })
