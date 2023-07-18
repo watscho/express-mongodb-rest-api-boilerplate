@@ -75,7 +75,7 @@
     "i18next": "22.4.9",
     "i18next-http-middleware": "3.2.2",
     "jsonwebtoken": "8.5.1",
-    "mongoose": "6.6.5",
+    "mongoose": "6.11.3",
     "multer": "1.4.5-lts.1",
     "nodemailer": "6.9.1",
     "randomstring": "1.2.3",
