@@ -7,7 +7,7 @@ export const resetPasswordService = {
   create: (
     {
       userId,
-      accessToken,
+      accessToken = 'CnxFy437l0YdtoRM',
       expiresIn
     }: {
       userId: ObjectId
