@@ -12,6 +12,23 @@ import {
 import { router } from '@/routes'
 import { i18next, i18nextHttpMiddleware } from '@/i18n'
 
+// Validate JWT_SECRET at startup — reject empty/weak defaults
+const KNOWN_WEAK_SECRETS = [
+  '', 'secret', 'changeme', 'jwt_secret', 'your-secret-key',
+]
+if (!process.env.JWT_SECRET || KNOWN_WEAK_SECRETS.includes(process.env.JWT_SECRET)) {
+  throw new Error(
+    'JWT_SECRET is not set or uses a known default value. ' +
+    'Set JWT_SECRET in your .env file. ' +
+    'Generate a secure key: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"'
+  )
+}
+if (process.env.JWT_SECRET.length < 32) {
+  throw new Error(
+    `JWT_SECRET must be at least 32 characters. Current length: ${process.env.JWT_SECRET.length}.`
+  )
+}
+
 mongoose.run()
 redis.run()
 
