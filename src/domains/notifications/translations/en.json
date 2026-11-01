@@ -1,0 +1,81 @@
+{
+  "layout": {
+    "footerLabel": "Powered by",
+    "fallbackLinkLabel": "If the button does not work, copy this link into your browser:"
+  },
+  "signUp": {
+    "subject": "Welcome!",
+    "title": "Welcome!",
+    "body": "Your account has been created. We are glad to have you here.",
+    "text": "Your account has been created. We are glad to have you here.\n\nYou will receive a separate email with a link to confirm your email address.\n\nOpen the application: {{values.clientUrl}}",
+    "actionLabel": "Open the application",
+    "preview": "Your account has been created. Welcome aboard.",
+    "verificationNote": "You will receive a separate email with a link to confirm your email address."
+  },
+  "resetPassword": {
+    "subject": "Reset your password",
+    "title": "Reset your password",
+    "body": "We received a request to reset your password. Use the button below to choose a new one.",
+    "text": "We received a request to reset your password.\n\nChoose a new password: {{values.actionUrl}}\n\nThis link can be used once and expires 24 hours after the request.\n\nIf you did not request a password reset, you can ignore this email. Your password will stay unchanged.",
+    "actionLabel": "Reset password",
+    "preview": "Choose a new password using your secure reset link.",
+    "expiryNotice": "This link can be used once and expires 24 hours after the request.",
+    "securityNotice": "If you did not request a password reset, you can ignore this email. Your password will stay unchanged."
+  },
+  "verification": {
+    "subject": "Verify your email",
+    "title": "Verify your email",
+    "body": "Please confirm that this email address belongs to you.",
+    "text": "Please confirm that this email address belongs to you.\n\nVerify your email address: {{values.actionUrl}}\n\nThis link can be used once and expires 7 days after the request.\n\nIf you did not create this account or request verification, you can ignore this email.",
+    "actionLabel": "Verify email address",
+    "preview": "Confirm your email address to complete verification.",
+    "expiryNotice": "This link can be used once and expires 7 days after the request.",
+    "securityNotice": "If you did not create this account or request verification, you can ignore this email."
+  },
+  "successfullyVerified": {
+    "subject": "Email verified",
+    "title": "Email verified",
+    "body": "Your email address has been verified successfully.",
+    "text": "Your email address has been verified successfully.\n\nYou can return to the application and continue using your account: {{values.clientUrl}}",
+    "actionLabel": "Open the application",
+    "preview": "Your email address is now verified.",
+    "nextStep": "You can return to the application and continue using your account."
+  },
+  "successfullyDeleted": {
+    "subject": "Profile deleted",
+    "title": "Profile deleted",
+    "body": "Your profile has been deleted. You can no longer sign in with this account.",
+    "text": "Your profile has been deleted. You can no longer sign in with this account.\n\nIf you did not request this deletion, contact support.",
+    "actionLabel": "Continue",
+    "preview": "Your account has been deleted.",
+    "securityNotice": "If you did not request this deletion, contact support."
+  },
+  "successfullyUpdatedEmail": {
+    "subject": "Email updated",
+    "title": "Email updated",
+    "body": "The email address associated with your account has been changed.",
+    "text": "The email address associated with your account has been changed.\n\nWe sent this notification to your previous email address to keep you informed.\n\nIf you did not make this change, contact support immediately.",
+    "actionLabel": "Continue",
+    "preview": "The email address for your account has changed.",
+    "previousAddressNotice": "We sent this notification to your previous email address to keep you informed.",
+    "securityNotice": "If you did not make this change, contact support immediately."
+  },
+  "successfullyUpdatedPassword": {
+    "subject": "Password updated",
+    "title": "Password updated",
+    "body": "The password for your account has been changed.",
+    "text": "The password for your account has been changed.\n\nIf you did not change your password, contact support immediately.",
+    "actionLabel": "Continue",
+    "preview": "The password for your account has changed.",
+    "securityNotice": "If you did not change your password, contact support immediately."
+  },
+  "successfullyUpdatedProfile": {
+    "subject": "Profile updated",
+    "title": "Profile updated",
+    "body": "Your profile information has been updated.",
+    "text": "Your profile information has been updated.\n\nIf you did not make this change, review your account security and contact support.",
+    "actionLabel": "Continue",
+    "preview": "Your profile changes have been saved.",
+    "securityNotice": "If you did not make this change, review your account security and contact support."
+  }
+}

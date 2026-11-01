@@ -1,0 +1,5 @@
+<%- include('./button.ejs', { url: actionUrl, label: t('actionLabel') }) %>
+<p style="margin: 0 0 20px; font-size: 13px; line-height: 1.6; color: #64748b;">
+  <%= t('fallbackLinkLabel') %><br />
+  <a href="<%= actionUrl %>" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; overflow-wrap: anywhere; word-break: break-all;"><%= actionUrl %></a>
+</p>

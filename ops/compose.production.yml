@@ -1,0 +1,99 @@
+name: express-api
+
+x-application: &application
+  image: ${API_IMAGE:-express-mongodb-api:2.0.0}
+  build:
+    context: ..
+    dockerfile: ops/Dockerfile
+  init: true
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  pids_limit: 128
+  tmpfs:
+    - /tmp:size=64m,mode=1777
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: '3'
+
+services:
+  api:
+    <<: *application
+    restart: unless-stopped
+    env_file: ./environments/api.env
+    ports:
+      - '127.0.0.1:${API_PORT:-8000}:8000'
+    volumes:
+      - uploads:/app/storage
+    secrets:
+      - source: api_mongodb_uri
+        target: mongodb_uri
+      - redis_uri
+      - jwt_secret
+      - mail_queue_key
+    stop_grace_period: 30s
+    mem_limit: 1g
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '--input-type=module',
+          '-e',
+          "import http from 'node:http'; const request=http.get({host:'127.0.0.1',port:process.env.APP_PORT||8000,path:'/health/ready',timeout:3000},response=>{response.resume();process.exitCode=response.statusCode===200?0:1});request.on('timeout',()=>request.destroy());request.on('error',()=>{process.exitCode=1});"
+        ]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+  mail-worker:
+    <<: *application
+    command: [node, --enable-source-maps, dist/app/runtime/mail/worker.js]
+    restart: unless-stopped
+    env_file: ./environments/mail.env
+    secrets:
+      - source: worker_mongodb_uri
+        target: mongodb_uri
+      - mail_queue_key
+      - smtp_password
+    stop_grace_period: 90s
+    mem_limit: 512m
+    healthcheck:
+      test: [CMD, node, dist/app/runtime/commands/mail.js, health]
+      interval: 30s
+      timeout: 20s
+      start_period: 30s
+      retries: 3
+
+  operations:
+    <<: *application
+    profiles: [operations]
+    command: [node, dist/app/runtime/commands/mail.js, stats]
+    restart: 'no'
+    env_file: ./environments/database.env
+    secrets:
+      - source: maintenance_mongodb_uri
+        target: mongodb_uri
+    mem_limit: 512m
+
+volumes:
+  uploads:
+
+secrets:
+  api_mongodb_uri:
+    file: ./secrets/api-mongodb-uri
+  worker_mongodb_uri:
+    file: ./secrets/worker-mongodb-uri
+  maintenance_mongodb_uri:
+    file: ./secrets/maintenance-mongodb-uri
+  redis_uri:
+    file: ./secrets/redis-uri
+  jwt_secret:
+    file: ./secrets/jwt-secret
+  mail_queue_key:
+    file: ./secrets/mail-queue-key
+  smtp_password:
+    file: ./secrets/smtp-password

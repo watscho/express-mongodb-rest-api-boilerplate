@@ -1,0 +1,15 @@
+.git
+node_modules
+.yarn/*
+!.yarn/releases
+!.yarn/releases/**
+.pnp.*
+dist
+storage
+public
+.env
+.env.*
+*.log
+.DS_Store
+ops/secrets
+ops/environments/*.env

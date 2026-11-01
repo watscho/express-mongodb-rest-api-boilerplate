@@ -1,30 +1,25 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "CommonJS",
+    "target": "ES2024",
+    "lib": ["ES2024"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "src",
+    "outDir": "dist",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noEmitOnError": true,
+    "verbatimModuleSyntax": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "strictPropertyInitialization": false,
-    "strict": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "removeComments": true,
-    "noImplicitAny": true,
-    "paths": {
-      "@/*": ["*"]
-    },
-    "baseUrl": "./src",
-    "rootDir": "./src",
-    "outDir": "./public",
-    "lib": ["ESNext"],
+    "isolatedModules": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
     "types": ["node"],
-    "typeRoots": ["./node_modules/@types"]
+    "rewriteRelativeImportExtensions": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts"]
 }
