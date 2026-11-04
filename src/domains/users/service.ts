@@ -34,7 +34,12 @@ export const userService = {
     language?: string
   ): Promise<UpdateProfileDto> {
     await database.transaction(async session => {
-      await userService.lockCurrent(user, session)
+      const current = await userService.lockCurrent(user, session)
+      if (
+        current.firstName === payload.firstName &&
+        current.lastName === payload.lastName
+      )
+        return
       await userRepository.updateProfile(user.id, payload, session)
       await notificationService.enqueueAccount(
         'successfullyUpdatedProfile',

@@ -19,7 +19,16 @@ export const routeFixture = async () => {
     'deleteProfile'
   ])
   const users = methods(['updateProfile'])
-  const media = methods(['avatarUrl', 'upload', 'updateAvatar'])
+  const media = methods([
+    'avatarUrl',
+    'upload',
+    'updateAvatar',
+    'reserveUpload',
+    'abandonUpload'
+  ])
+  media.reserveUpload.mock.mockImplementation(
+    async () => '11111111-1111-4111-8111-111111111111'
+  )
   const verification = methods(['request', 'confirm'])
   const getAuth = res => {
     if (!res.locals.auth)

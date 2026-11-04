@@ -118,6 +118,16 @@ const settingsSchema = z.object({
   RATE_LIMIT_WINDOW_MS: positiveInteger.default(15 * 60 * 1000),
   RATE_LIMIT_MAX: positiveInteger.default(100),
   AUTH_RATE_LIMIT_MAX: positiveInteger.default(10),
+  ACCOUNT_RATE_LIMIT_MAX: positiveInteger.default(20),
+  MAIL_RECIPIENT_DAILY_LIMIT: positiveInteger.default(50),
+  MAIL_TEMPLATE_DAILY_LIMIT: positiveInteger.default(10),
+  MAIL_SECURITY_COOLDOWN_MS: positiveInteger
+    .min(1000)
+    .max(86400000)
+    .default(60000),
+  MEDIA_MAX_FILES: positiveInteger.default(20),
+  MEDIA_MAX_TOTAL_BYTES: positiveInteger.default(100 * 1024 * 1024),
+  MEDIA_UNUSED_RETENTION_MS: positiveInteger.min(3600000).default(86400000),
   TRUST_PROXY: z.string().default(''),
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'http', 'debug']).default('info'),
   API_LOG_FILENAME: z.string().min(1).optional(),
@@ -168,6 +178,7 @@ export const apiEnvironmentSchema = settingsSchema
     RATE_LIMIT_WINDOW_MS: true,
     RATE_LIMIT_MAX: true,
     AUTH_RATE_LIMIT_MAX: true,
+    ACCOUNT_RATE_LIMIT_MAX: true,
     TRUST_PROXY: true,
     SHUTDOWN_TIMEOUT_MS: true,
     DOCS_ENABLED: true,
@@ -197,7 +208,10 @@ export const notificationEnvironmentSchema = settingsSchema.pick({
   MAIL_DEFAULT_LANGUAGE: true
 })
 export const queueEnvironmentSchema = settingsSchema.pick({
-  MAIL_QUEUE_ENCRYPTION_KEY: true
+  MAIL_QUEUE_ENCRYPTION_KEY: true,
+  MAIL_RECIPIENT_DAILY_LIMIT: true,
+  MAIL_TEMPLATE_DAILY_LIMIT: true,
+  MAIL_SECURITY_COOLDOWN_MS: true
 })
 export const deliveryEnvironmentSchema = settingsSchema
   .pick({
@@ -247,6 +261,27 @@ export const mailEnvironmentSchema = settingsSchema
         code: 'custom',
         path: ['MAIL_USER'],
         message: 'SMTP username and password must be supplied together'
+      })
+    }
+  })
+
+export const mediaEnvironmentSchema = settingsSchema
+  .pick({
+    APP_URL: true,
+    STORAGE_PATH: true,
+    STORAGE_URL: true,
+    MAX_UPLOAD_BYTES: true,
+    MEDIA_MAX_FILES: true,
+    MEDIA_MAX_TOTAL_BYTES: true,
+    MEDIA_UNUSED_RETENTION_MS: true
+  })
+  .superRefine((value, ctx) => {
+    if (value.MEDIA_MAX_TOTAL_BYTES < value.MAX_UPLOAD_BYTES + 256 * 1024) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['MEDIA_MAX_TOTAL_BYTES'],
+        message:
+          'Media quota must accommodate one maximum upload and its conversion'
       })
     }
   })

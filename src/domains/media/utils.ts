@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import { apiEnv as env } from '../../app/config/api.ts'
+import { mediaEnv as env } from '../../app/config/media.ts'
 import { projectRoot, resolveWithinRoot } from '../../app/runtime/paths.ts'
 
 export const storageRoot = resolve(projectRoot, env.STORAGE_PATH)

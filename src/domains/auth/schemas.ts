@@ -1,11 +1,19 @@
 import { z } from 'zod'
+import { isCommonPassword } from './password-policy.ts'
 import { accountSchema, emailSchema, objectIdSchema } from '../users/schemas.ts'
 
 export const currentPasswordSchema = z.string().min(1).max(1024)
 export const passwordSchema = z
   .string()
-  .min(6)
-  .max(48)
+  .min(15)
+  .max(72)
+  .refine(value => Array.from(value).length >= 15, {
+    message: 'auth.password_too_short',
+    params: { min: 15 }
+  })
+  .refine(value => !isCommonPassword(value), {
+    message: 'auth.password_common'
+  })
   .refine(value => Buffer.byteLength(value, 'utf8') <= 72, {
     message: 'auth.password_max_bytes',
     params: { max: 72 }

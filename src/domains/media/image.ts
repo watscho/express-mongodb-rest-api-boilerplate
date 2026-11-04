@@ -1,7 +1,8 @@
 import { randomUUID } from 'node:crypto'
-import { access, mkdir, rename, rm } from 'node:fs/promises'
+import { access, mkdir, rename, rm, stat } from 'node:fs/promises'
 import sharp from 'sharp'
 import { AppError } from '../../app/http/errors.ts'
+import { MAX_CONVERSION_BYTES } from './limits.ts'
 import { storagePath } from './utils.ts'
 import type { StoredImageDto } from './dto.ts'
 
@@ -23,6 +24,7 @@ export class Image {
       storagePath(this.image.filename),
       INPUT_OPTIONS
     )
+      .timeout({ seconds: 30 })
       .metadata()
       .catch(() => {
         throw new AppError(400, 'media.invalid_image')
@@ -58,10 +60,13 @@ export class Image {
     const temporary = storagePath(`conversions/${randomUUID()}.tmp`)
     try {
       await sharp(storagePath(this.image.filename), INPUT_OPTIONS)
+        .timeout({ seconds: 30 })
         .rotate()
         .resize(width, height, { fit: 'cover', withoutEnlargement: true })
         .webp({ quality: 85 })
         .toFile(temporary)
+      if ((await stat(temporary)).size > MAX_CONVERSION_BYTES)
+        throw new AppError(413, 'media.conversion_too_large')
       await rename(temporary, destination)
     } finally {
       await rm(temporary, { force: true })
@@ -70,10 +75,11 @@ export class Image {
   }
 
   async deleteFile() {
-    await rm(storagePath(this.image.filename), { force: true })
-    // Only one conversion is exposed by this API; avoid scans and filename regexes.
-    await rm(storagePath(this.conversionPath), {
-      force: true
-    })
+    const results = await Promise.allSettled([
+      rm(storagePath(this.image.filename), { force: true }),
+      rm(storagePath(this.conversionPath), { force: true })
+    ])
+    const failure = results.find(result => result.status === 'rejected')
+    if (failure?.status === 'rejected') throw failure.reason
   }
 }

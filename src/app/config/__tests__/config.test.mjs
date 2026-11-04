@@ -252,3 +252,9 @@ test('invalid application URL and empty documentation credentials are handled', 
     }).success
   )
 })
+test('media quota configuration must reserve one full upload and its conversion', () => {
+  assert.equal(
+    s.mediaEnvironmentSchema.safeParse({ MEDIA_MAX_TOTAL_BYTES: 1 }).success,
+    false
+  )
+})

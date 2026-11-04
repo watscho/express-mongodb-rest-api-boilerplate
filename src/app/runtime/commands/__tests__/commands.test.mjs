@@ -128,3 +128,19 @@ for (const mode of ['configuration', 'connect', 'command', 'disconnect'])
     assert.equal(process.exitCode, 1)
     assert(report.mock.callCount() > 0)
   })
+
+const mediaCleanup = {
+  cleanupUnusedMedia: mock.fn(async () => ({ deleted: 1, failed: 0 }))
+}
+replace('domains/media/cleanup.js', mediaCleanup)
+test('media cleanup help does not connect and successful/partial cleanup reports status', async () => {
+  await run('media', ['--help'])
+  assert.equal(db.connect.mock.callCount(), 0)
+  await run('media', [])
+  assert.equal(process.exitCode, 0)
+  mediaCleanup.cleanupUnusedMedia.mock.mockImplementation(async () => ({
+    failed: 1
+  }))
+  await run('media', ['--limit', '1'])
+  assert.equal(process.exitCode, 1)
+})

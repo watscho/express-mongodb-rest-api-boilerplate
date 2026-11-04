@@ -3,7 +3,7 @@ import { hash } from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { apiEnv as env } from '../../app/config/api.ts'
 import type { AccountDto } from '../users/index.ts'
-import { tokenClaimsSchema } from './schemas.ts'
+import { tokenClaimsSchema, passwordSchema } from './schemas.ts'
 import type { AccessTokenDto, TokenClaimsDto, EmailTokenDto } from './dto.ts'
 
 export const createEmailToken = (lifetimeDays: number): EmailTokenDto => ({
@@ -13,7 +13,7 @@ export const createEmailToken = (lifetimeDays: number): EmailTokenDto => ({
 export const hashToken = (token: string) =>
   createHash('sha256').update(token).digest('hex')
 export const hashPassword = (password: string) =>
-  hash(password, env.BCRYPT_ROUNDS)
+  hash(passwordSchema.parse(password), env.BCRYPT_ROUNDS)
 
 export const jwtSign = (user: AccountDto): AccessTokenDto => ({
   accessToken: jwt.sign({ version: user.authVersion }, env.JWT_SECRET, {

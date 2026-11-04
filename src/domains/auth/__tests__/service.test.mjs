@@ -8,6 +8,7 @@ import {
   database,
   reset
 } from '../../../__tests__/helpers.mjs'
+replace('domains/auth/admission.js', { consumeAccountBudget: async () => {} })
 const users = methods([
   'getCredentialsById',
   'getCredentialsByEmail',
@@ -243,4 +244,18 @@ test('delete cleans owned images only after successful transaction', async () =>
     /rollback/
   )
   assert.equal(media.cleanupFiles.mock.callCount(), 0)
+})
+test('reset budget denial keeps generic response and propagates unrelated failures', async () => {
+  const { AppError } = await import('../../../../dist/app/http/errors.js')
+  notifications.enqueueAccount.mock.mockImplementation(async () => {
+    throw new AppError(429, 'notifications.recipient_rate_limited')
+  })
+  await a.resetPassword({ email: user.email })
+  notifications.enqueueAccount.mock.mockImplementation(async () => {
+    throw Error('database down')
+  })
+  await assert.rejects(
+    () => a.resetPassword({ email: user.email }),
+    /database down/
+  )
 })

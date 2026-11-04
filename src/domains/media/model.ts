@@ -4,6 +4,12 @@ import { imageMimeSchema } from './schemas.ts'
 
 const schema = new Schema(
   {
+    status: {
+      type: String,
+      enum: ['uploading', 'ready', 'deleting'],
+      default: 'ready'
+    },
+    expiresAt: { type: Date },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -31,5 +37,6 @@ schema.index(
   { owner: 1, refType: 1, refId: 1 },
   { name: 'media_owner_attachment' }
 )
+schema.index({ status: 1, updatedAt: 1 }, { name: 'media_cleanup' })
 export type MediaDocument = HydratedDocument<InferSchemaType<typeof schema>>
 export const Media = model('Media', schema)

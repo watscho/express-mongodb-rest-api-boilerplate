@@ -44,3 +44,7 @@ const issues = response.details?.map(issue => ({
 Do not display keys directly as user-facing prose. Business logic should use status codes and documented machine keys rather than compare translated strings. Health endpoints keep their machine-readable health payloads rather than the message envelope.
 
 `Accept-Language` does not translate API responses. It selects the language of emails triggered by account workflows. Server dictionaries in the notification domain are only for [email content](notifications.md).
+
+## Security-policy keys
+
+New-password validation may return `auth.password_too_short`, `auth.password_common`, or `auth.password_max_bytes` in field details. `auth.account_rate_limited` and `notifications.recipient_rate_limited` use HTTP 429 and `Retry-After`; the existing IP limits still return `http.status.429`. Password reset intentionally retains its generic success envelope when a recipient budget rejects a resend, so a rejected resend does not invalidate an earlier valid link. Media quotas and oversized conversions use `media.quota_exceeded` / `media.conversion_too_large` with HTTP 413. An expired or fenced upload reservation uses `media.upload_reservation_expired` with HTTP 409; upload the file again after resolving quota or connectivity issues.

@@ -16,7 +16,7 @@ Use the configured public API base, JSON for ordinary request bodies, and `Autho
 
 Operations without a data payload omit `data`. Errors contain `messageKey`, numeric `status`, and optional validation `details`; translate keys on the client as described in [API message keys](api-message-keys.md). Use the actual HTTP status to branch success/failure. Health responses and static image resources have separate formats.
 
-Unknown JSON fields are stripped by ordinary object schemas. This is not permission to send arbitrary fields: use the documented body contract. Email identities are trimmed/lowercased without provider-specific alias rewriting. New passwords are 6–48 characters and at most 72 UTF-8 bytes. Profile names are trimmed to 2–48 characters. JSON/form bodies have a 100 KiB parser limit.
+Unknown JSON fields are stripped by ordinary object schemas. This is not permission to send arbitrary fields: use the documented body contract. Email identities are trimmed/lowercased without provider-specific alias rewriting. New passwords require at least 15 Unicode code points, at most 72 UTF-8 bytes, and offline common-password screening. Sign-in and confirmation still accept existing passwords. Profile names are trimmed to 2–48 characters. JSON/form bodies have a 100 KiB parser limit.
 
 ## Current operations
 

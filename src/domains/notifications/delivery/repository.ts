@@ -22,6 +22,8 @@ const ownedLease = (job: ClaimedEmailDto) => ({
 })
 
 export const deliveryRepository = {
+  findEnqueued: (id: string, session: ClientSession) =>
+    EmailOutbox.findById(id).session(session).select('+fingerprint').exec(),
   async enqueue({ id, ...record }: CreateDeliveryDto, session?: ClientSession) {
     try {
       return await EmailOutbox.findOneAndUpdate(
@@ -37,7 +39,7 @@ export const deliveryRepository = {
             )
           }
         },
-        { upsert: true, new: true, session, runValidators: true }
+        { upsert: true, returnDocument: 'after', session, runValidators: true }
       )
         .select('+fingerprint')
         .exec()
@@ -70,7 +72,7 @@ export const deliveryRepository = {
         lockedUntil: { $lte: now }
       },
       update,
-      { sort: { lockedUntil: 1, _id: 1 }, new: true }
+      { sort: { lockedUntil: 1, _id: 1 }, returnDocument: 'after' }
     )
       .select('+payload')
       .exec()
@@ -82,7 +84,7 @@ export const deliveryRepository = {
           availableAt: { $lte: now }
         },
         update,
-        { sort: { availableAt: 1, _id: 1 }, new: true }
+        { sort: { availableAt: 1, _id: 1 }, returnDocument: 'after' }
       )
         .select('+payload')
         .exec())
@@ -96,7 +98,7 @@ export const deliveryRepository = {
         attempts: { $lt: job.maxAttempts }
       },
       { $inc: { attempts: 1 } },
-      { new: true }
+      { returnDocument: 'after' }
     )
       .select('+payload')
       .exec()
@@ -187,7 +189,7 @@ export const deliveryRepository = {
         $set: { status: 'queued', attempts: 0, availableAt: new Date() },
         $unset: { completedAt: 1, lastErrorCode: 1 }
       },
-      { new: true }
+      { returnDocument: 'after' }
     )
       .select('-payload -fingerprint -ownerId')
       .maxTimeMS(10000)

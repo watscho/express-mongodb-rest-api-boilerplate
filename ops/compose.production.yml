@@ -8,7 +8,7 @@ x-application: &application
   init: true
   read_only: true
   cap_drop: [ALL]
-  security_opt: [no-new-privileges:true]
+  security_opt: ['no-new-privileges:true']
   pids_limit: 128
   tmpfs:
     - /tmp:size=64m,mode=1777
@@ -67,6 +67,19 @@ services:
       timeout: 20s
       start_period: 30s
       retries: 3
+
+  media-cleanup:
+    <<: *application
+    profiles: [operations]
+    command: [node, dist/app/runtime/commands/media.js, --limit, '100']
+    restart: 'no'
+    env_file: ./environments/media.env
+    volumes:
+      - uploads:/app/storage
+    secrets:
+      - source: maintenance_mongodb_uri
+        target: mongodb_uri
+    mem_limit: 512m
 
   operations:
     <<: *application

@@ -7,10 +7,19 @@ const loaders = {
   notifications: () => import('./notifications.ts'),
   queue: () => import('./queue.ts'),
   delivery: () => import('./delivery.ts'),
-  mail: () => import('./mail.ts')
+  mail: () => import('./mail.ts'),
+  media: () => import('./media.ts')
 }
 const profiles = {
-  api: ['runtime', 'database', 'api', 'notifications', 'queue', 'delivery'],
+  api: [
+    'runtime',
+    'database',
+    'api',
+    'notifications',
+    'queue',
+    'delivery',
+    'media'
+  ],
   'mail-worker': [
     'runtime',
     'database',
@@ -20,6 +29,7 @@ const profiles = {
     'mail'
   ],
   database: ['runtime', 'database'],
+  'media:cleanup': ['runtime', 'database', 'media'],
   'mail:queue': ['database', 'delivery']
 } as const
 

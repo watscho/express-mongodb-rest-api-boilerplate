@@ -19,7 +19,8 @@ for (const name of [
   'ResetPassword',
   'Verification',
   'EmailOutbox',
-  'EmailWorker'
+  'EmailWorker',
+  'EmailBudget'
 ]) {
   const collection = {
     name,
@@ -58,6 +59,9 @@ for (const [path, exports] of [
   ]
 ])
   replace(`domains/${path}/model.js`, exports)
+replace('domains/notifications/delivery/budget-model.js', {
+  EmailBudget: models.EmailBudget
+})
 beforeEach(() => {
   process.exitCode = 0
   conflicts = false

@@ -71,6 +71,8 @@ export const errorMiddleware: ErrorRequestHandler = (
       status,
       ...errorDiagnostic(error, { component: 'api', stage: 'http' })
     })
+  if (error instanceof AppError && error.retryAfterSeconds !== undefined)
+    res.setHeader('Retry-After', String(error.retryAfterSeconds))
   res.setHeader('Cache-Control', 'no-store')
   if (status === 401) res.setHeader('WWW-Authenticate', 'Bearer')
   res.status(status).json(createErrorResponse(status, messageKey, details))

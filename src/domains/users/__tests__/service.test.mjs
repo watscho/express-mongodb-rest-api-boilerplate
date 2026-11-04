@@ -59,3 +59,13 @@ test('stale account cannot update profile', async () => {
   await assert.rejects(() => u.updateProfile(user, {}), { status: 401 })
   assert.equal(repo.updateProfile.mock.callCount(), 0)
 })
+test('unchanged profile does not consume notification budget or update persistence', async () => {
+  repo.lock.mock.mockImplementation(async () => ({
+    ...user,
+    firstName: 'Unit',
+    lastName: 'Test'
+  }))
+  await u.updateProfile(user, { firstName: 'Unit', lastName: 'Test' })
+  assert.equal(repo.updateProfile.mock.callCount(), 0)
+  assert.equal(notifications.enqueueAccount.mock.callCount(), 0)
+})

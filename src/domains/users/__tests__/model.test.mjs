@@ -1,3 +1,4 @@
+import { EmailBudget } from '../../../../dist/domains/notifications/delivery/budget-model.js'
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { User } from '../../../../dist/domains/users/model.js'
@@ -33,7 +34,8 @@ test('token and media models reject invalid values and define operational indexe
     Verification,
     Media,
     EmailOutbox,
-    EmailWorker
+    EmailWorker,
+    EmailBudget
   ]) {
     await assert.rejects(() => new Model().validate())
     assert(Model.schema.indexes().length > 0)

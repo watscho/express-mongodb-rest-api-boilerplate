@@ -29,7 +29,7 @@ export const createAuthDocumentation = (): OpenApiPathsDto => {
         operationId: 'signIn',
         summary: 'Sign in',
         description:
-          'Returns an HS256 bearer JWT. Passwords are 6–48 characters and at most 72 UTF-8 bytes when created; sign-in accepts existing credentials without reapplying creation policy.',
+          'Returns an HS256 bearer JWT. New passwords require at least 15 Unicode code points, at most 72 UTF-8 bytes, and offline common-password screening; sign-in accepts existing credentials without reapplying creation policy.',
         tag: 'Authentication',
         access: 'guest',
         body: credentialsSchema,
@@ -42,7 +42,7 @@ export const createAuthDocumentation = (): OpenApiPathsDto => {
         operationId: 'signUp',
         summary: 'Create an account',
         description:
-          'Creates an unverified account and queues welcome/verification emails. Emails are trimmed/lowercased without provider-specific alias rewriting. Passwords must be 6–48 characters and at most 72 UTF-8 bytes.',
+          'Creates an unverified account and queues welcome/verification emails. Emails are trimmed/lowercased without provider-specific alias rewriting. New passwords require at least 15 Unicode code points, at most 72 UTF-8 bytes, and offline common-password screening.',
         tag: 'Authentication',
         access: 'guest',
         body: signUpSchema,

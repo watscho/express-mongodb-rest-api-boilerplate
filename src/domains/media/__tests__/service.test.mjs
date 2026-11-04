@@ -10,6 +10,12 @@ import {
   logger
 } from '../../../__tests__/helpers.mjs'
 const repo = methods([
+  'reserve',
+  'usage',
+  'reservation',
+  'finalize',
+  'markFailed',
+  'removeDeleted',
   'create',
   'getAvatar',
   'existsOwned',
@@ -53,19 +59,22 @@ const row = {
 beforeEach(() => {
   reset(repo, users, image, logger, database)
   image.resize.mock.mockImplementation(async () => 'conversions/unit.webp')
-  repo.create.mock.mockImplementation(async () => row)
+  repo.finalize.mock.mockImplementation(async () => row)
+  repo.reservation.mock.mockImplementation(async () => row)
+  repo.markFailed.mock.mockImplementation(async () => row)
+  repo.usage.mock.mockImplementation(async () => ({ count: 0, bytes: 0 }))
   repo.listOwned.mock.mockImplementation(async () => [row])
 })
 test('upload validates converts and saves owned media within transaction', async () => {
   const result = await m.upload(row, user)
   assert.equal(result.id, user.id)
   assert.equal(image.validate.mock.callCount(), 1)
-  assert.equal(repo.create.mock.calls[0].arguments[1], user.id)
-  assert.equal(repo.create.mock.calls[0].arguments[2], session)
+  assert.equal(repo.finalize.mock.calls[0].arguments[1], user.id)
+  assert.equal(repo.finalize.mock.calls[0].arguments[2], session)
 })
 for (const mode of ['validate', 'resize', 'save'])
   test(`failed upload cleans files after ${mode}`, async () => {
-    const fn = mode === 'save' ? repo.create : image[mode]
+    const fn = mode === 'save' ? repo.finalize : image[mode]
     fn.mock.mockImplementation(async () => {
       throw Error('failure')
     })
@@ -113,4 +122,41 @@ test('deletion returns owned files and tolerates filesystem cleanup errors', asy
 test('successful filesystem cleanup produces no error log', async () => {
   await m.cleanupFiles([row])
   assert.equal(logger.error.mock.callCount(), 0)
+})
+test('pre-write reservations are serialized on the current owner and enforce count and bytes', async () => {
+  const filename = await m.reserveUpload(user)
+  assert.match(filename, /^[a-f0-9-]{36}$/)
+  assert.equal(repo.reserve.mock.calls[0].arguments[2], session)
+  repo.usage.mock.mockImplementation(async () => ({ count: 20, bytes: 0 }))
+  await assert.rejects(() => m.reserveUpload(user), {
+    messageKey: 'media.quota_exceeded'
+  })
+  repo.usage.mock.mockImplementation(async () => ({
+    count: 1,
+    bytes: 100 * 1024 * 1024
+  }))
+  await assert.rejects(() => m.reserveUpload(user), { status: 413 })
+})
+test('stale reservation cannot access or delete existing files', async () => {
+  repo.reservation.mock.mockImplementation(async () => null)
+  await assert.rejects(() => m.upload(row, user), { status: 409 })
+  assert.equal(image.validate.mock.callCount(), 0)
+  assert.equal(image.deleteFile.mock.callCount(), 0)
+})
+test('cleanup fences a timed-out finalization and missing reservations are idempotent', async () => {
+  repo.finalize.mock.mockImplementation(async () => null)
+  await assert.rejects(() => m.upload(row, user), { status: 409 })
+  assert.equal(image.deleteFile.mock.callCount(), 1)
+  repo.markFailed.mock.mockImplementation(async () => null)
+  await m.abandonUpload('already-removed', user.id)
+})
+test('an unavailable abandonment journal cannot replace the original upload error', async () => {
+  image.validate.mock.mockImplementation(async () => {
+    throw Error('original')
+  })
+  repo.markFailed.mock.mockImplementation(async () => {
+    throw Error('database unavailable')
+  })
+  await assert.rejects(() => m.upload(row, user), /original/)
+  assert.equal(logger.error.mock.callCount(), 1)
 })

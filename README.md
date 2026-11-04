@@ -163,7 +163,7 @@ Profile names and an avatar URL appear when available. Password/email changes an
 
 ### Handle validation errors
 
-A password shorter than six characters is rejected:
+New passwords require at least 15 Unicode characters, at most 72 UTF-8 bytes, and must pass the offline common-password screen. Existing passwords remain usable for sign-in and password confirmation. A shorter new password is rejected:
 
 ```sh
 curl -i "$API_BASE_URL/auth/sign-up" \
@@ -181,7 +181,7 @@ Response, HTTP `400`:
     {
       "path": "password",
       "messageKey": "validation.too_small",
-      "params": { "min": 6, "inclusive": true, "origin": "string" }
+      "params": { "min": 15, "inclusive": true, "origin": "string" }
     }
   ]
 }
@@ -263,11 +263,12 @@ For new domains and endpoints, follow the [developer guide](docs/development.md)
 | `yarn lint` / `yarn lint:fix`                            | Run ESLint / apply fixes                                       |
 | `yarn format` / `yarn format:check`                      | Write Prettier formatting / check formatting                   |
 | `yarn docs:export` / `yarn docs:export:prod`             | Export OpenAPI from source / compiled code                     |
+| `yarn media:cleanup` / `yarn media:cleanup:prod`         | Remove expired unused media and retry failed file deletions    |
 | `yarn mail:queue` / `yarn mail:queue:prod`               | Inspect queue metadata or explicitly retry an eligible job     |
 | `yarn db:indexes` / `yarn db:indexes:prod`               | Preflight conflicts and create missing collections/indexes     |
 | `yarn db:migrate:legacy` / `yarn db:migrate:legacy:prod` | Run the explicit legacy-data migration                         |
 
-Run `yarn build` before compiled commands. Build output is in `dist/`; uploads remain in the configured persistent storage directory. Queue retry, index creation, and legacy migration change state; select the intended environment before invoking them.
+Run `yarn build` before compiled commands. Build output is in `dist/`; uploads remain in the configured persistent storage directory. Media cleanup, queue retry, index creation, and legacy migration change state; select the intended environment before invoking them.
 
 ## Troubleshooting
 
@@ -331,7 +332,7 @@ Local results under Node.js **26.13.0**. Tooling and dependency-install results 
 | TypeScript 7 typecheck and build                                                                                  | Passed                                                                                                           |
 | ESLint and Prettier                                                                                               | Passed                                                                                                           |
 | Yarn 4 immutable install / production dependency focus                                                            | Passed with lifecycle/build execution disabled; production tools pruned and lockfile unchanged                   |
-| Unit tests (2026-11-04)                                                                                           | 375 passed; colocated `__tests__` folders, no external services                                                  |
+| Unit tests (2026-11-04)                                                                                           | 409 passed; colocated `__tests__` folders, no external services                                                  |
 | Compiled OpenAPI export                                                                                           | Generated; 18 operations / 17 paths match explicit source registrations                                          |
 | Local API/worker and account workflows (2026-11-04)                                                               | 53 HTTP/SMTP checks passed with MongoDB 8 replica set, isolated Redis, and Mailpit; new database indexes created |
 | Production deployment, generated clients, legacy migrations, application containers, external SMTP/inbox delivery | Not validated                                                                                                    |

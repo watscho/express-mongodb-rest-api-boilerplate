@@ -23,10 +23,10 @@ test('email tokens have entropy, fixed length, lifetime and SHA256 hashes', () =
 })
 
 test('password hashes are salted and verifiable', async () => {
-  const hash = await hashPassword('secret')
-  assert(await compare('secret', hash))
+  const hash = await hashPassword('juniper orbit velvet canoe')
+  assert(await compare('juniper orbit velvet canoe', hash))
   assert(!(await compare('wrong', hash)))
-  assert.notEqual(hash, await hashPassword('secret'))
+  assert.notEqual(hash, await hashPassword('juniper orbit velvet canoe'))
 })
 
 test('JWT roundtrip, unique jti, issuer audience algorithm signature and expiry', () => {

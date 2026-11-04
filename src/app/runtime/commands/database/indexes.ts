@@ -11,6 +11,7 @@ await bootstrap('db:indexes', async () => {
     { ResetPassword },
     { Verification },
     { EmailOutbox, EmailWorker },
+    { EmailBudget },
     { logger }
   ] = await Promise.all([
     import('../../../database/mongodb.ts'),
@@ -19,6 +20,7 @@ await bootstrap('db:indexes', async () => {
     import('../../../../domains/auth/model.ts'),
     import('../../../../domains/auth/verification/model.ts'),
     import('../../../../domains/notifications/delivery/model.ts'),
+    import('../../../../domains/notifications/delivery/budget-model.ts'),
     import('../../logger.ts')
   ])
   let stage = 'mongodb'
@@ -65,7 +67,8 @@ await bootstrap('db:indexes', async () => {
       ResetPassword,
       Verification,
       EmailOutbox,
-      EmailWorker
+      EmailWorker,
+      EmailBudget
     ]) {
       stage = `indexes:${model.modelName}`
       await model.createCollection()

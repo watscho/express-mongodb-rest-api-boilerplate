@@ -1,3 +1,5 @@
+import { database } from '../../../app/database/mongodb.ts'
+import { admitEmail } from './budget.ts'
 import { deliveryEnv as env } from '../../../app/config/delivery.ts'
 import { AppError } from '../../../app/http/errors.ts'
 import { toValidationIssueDto } from '../../../app/http/transformer.ts'
@@ -13,6 +15,10 @@ export const enqueueTemplate = async (
   input: SendTemplateDto,
   { session, options = {} }: EnqueueContextDto = {}
 ): Promise<DeliveryReceiptDto> => {
+  if (!session)
+    return database.transaction(transaction =>
+      enqueueTemplate(input, { session: transaction, options })
+    )
   const notification = prepareNotification(input)
   const parsed = enqueueOptionsSchema.safeParse(options)
   if (!parsed.success) {
@@ -41,6 +47,15 @@ export const enqueueTemplate = async (
     purpose,
     expiresAt
   })
+  if (idempotencyKey !== undefined) {
+    const existing = await deliveryRepository.findEnqueued(id, session)
+    if (existing) {
+      if (existing.fingerprint !== fingerprint)
+        throw new AppError(409, 'notifications.idempotency_conflict')
+      return { id: existing._id, status: existing.status }
+    }
+  }
+  await admitEmail(notification.email, notification.template, session)
   const job = await deliveryRepository.enqueue(
     {
       id,

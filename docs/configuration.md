@@ -14,9 +14,10 @@ API/worker bootstrap imports every required configuration profile before service
 | `notifications.ts` | Client links, language defaults, template root | None                                                                               |
 | `queue.ts`         | Producer/consumer payload encryption           | Queue encryption key                                                               |
 | `delivery.ts`      | Retry/lease/retention/heartbeat limits         | None                                                                               |
+| `media.ts`         | Upload quotas, retention and storage paths     | None                                                                               |
 | `mail.ts`          | SMTP submission and Message-ID domain          | SMTP credentials when required by the provider                                     |
 
-The API imports runtime, MongoDB, API, notification, queue, and delivery settings. The mail worker imports runtime, MongoDB, notification, queue, delivery, and SMTP settings. It has no dependency on the API/JWT/Redis profile. Queue administration imports only MongoDB and delivery settings; OpenAPI export imports no environment configuration.
+The API imports runtime, MongoDB, API, notification, queue, delivery, and media settings. The mail worker imports runtime, MongoDB, notification, queue, delivery, and SMTP settings. It has no dependency on the API/JWT/Redis profile. Queue administration imports only MongoDB and delivery settings; OpenAPI export imports no environment configuration.
 
 `dotenv/config` supports a local root `.env`; Node's `--env-file` or `DOTENV_CONFIG_PATH` can select another development file. Container environments use the separate examples in `ops/environments/`. Do not copy secrets or `.env` into an image.
 
@@ -26,6 +27,7 @@ Run local commands from the repository root so dotenv finds the intended `.env`,
 | ------------------------ | ----------------------------------------------------------------------------------- |
 | API                      | MongoDB, Redis, JWT signing, queue encryption, writable upload storage              |
 | Mail worker              | MongoDB, queue encryption, template files/dictionaries, SMTP                        |
+| Media cleanup            | MongoDB and writable upload storage; no JWT/Redis/SMTP/queue key                    |
 | Queue CLI                | MongoDB and operational delivery settings; no decryption/JWT/Redis/SMTP credentials |
 | Index/legacy maintenance | MongoDB and logging; maintenance privileges as needed                               |
 | OpenAPI export           | Package metadata and pure schemas; no environment profile or service connection     |
@@ -95,3 +97,15 @@ Documentation credentials protect both Swagger assets and the specification; the
 See [notifications](notifications.md) for all delivery, lease, expiry, concurrency, and retry settings. `MAIL_REQUIRE_TLS=true` requires STARTTLS when using submission such as port 587; `MAIL_SECURE=true` selects implicit TLS. The production worker example requires STARTTLS and supplies its credential through a secret file.
 
 `LOG_LEVEL` defaults to `info`. Development console output is readable text; production uses JSON. Warning/error records go to stderr and other enabled levels to stdout. `API_LOG_FILENAME` is a legacy optional sanitized JSON file-output setting shared by runtime logging; leave it unset in read-only containers and collect both streams externally. Early configuration/import failures use an independent stderr reporter even when the logger cannot load. Details and examples are in [logging](logging.md).
+
+## Account, email and media abuse controls
+
+Existing IP budgets remain enabled. `ACCOUNT_RATE_LIMIT_MAX` defaults to 20 attempts per `RATE_LIMIT_WINDOW_MS`, independently for sign-in and password-confirmation operations. Redis atomically counts attempts across IPs and replicas; a rejected attempt does not extend the fixed window. Keys contain an HMAC of the normalized identity rather than an email address. Dependency failures deny admission.
+
+`MAIL_RECIPIENT_DAILY_LIMIT=50` caps all new jobs for a normalized recipient per UTC day; `MAIL_TEMPLATE_DAILY_LIMIT=10` adds a per-template daily cap. `MAIL_SECURITY_COOLDOWN_MS=60000` applies to reset and verification emails. Budgets and new outbox jobs commit in the same MongoDB transaction. Rejected requests roll back account/link changes; reset responses remain generic. Replaying an existing matching idempotency key does not consume another budget. Retries of an already accepted job are governed by its existing delivery-attempt budget, not charged as another producer request. Budget identities are HMACs using the stable queue key; do not rotate keys merely to reset budgets.
+
+`MEDIA_MAX_FILES=20` and `MEDIA_MAX_TOTAL_BYTES=104857600` apply per owner, including attached images, unused images, in-flight uploads, and deletion records whose files could not be removed. Each upload reserves `MAX_UPLOAD_BYTES + 262144` bytes before Multer writes any data, then reduces the original-file charge to its actual size on success. Conversion capacity remains reserved, and generated conversions are explicitly capped at 256 KiB. The total quota must accommodate at least one maximum upload plus its conversion. Owner writes serialize reservations through the existing account mutation lock. Upload receipt has a 60-second deadline; Sharp operations have 30-second timeouts. Upload leases expire after five minutes, allowing crash recovery.
+
+`MEDIA_UNUSED_RETENTION_MS=86400000` retains unattached media for 24 hours by default (minimum one hour). Detaching an avatar refreshes its retention timestamp. Cleanup fences eligible records before unlinking; attachment excludes uploading/deleting records. Deletion failures preserve their records and quota charge for retries. Existing records without a lifecycle status are treated as ready and counted; no account-password or media-data rewrite is required. Provision the new EmailBudget collection/TTL index and media cleanup index with the explicit index command before accepting writes.
+
+These controls are application budgets, not a replacement for a bounded storage volume, provider limits, monitoring, or deployment access controls. The local common-password dictionary is not a complete live breach database, and passwords are never submitted to an external checker.

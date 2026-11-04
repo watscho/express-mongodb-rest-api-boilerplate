@@ -4,7 +4,7 @@ const [mode, role] = process.argv.slice(2)
 registerHooks({
   load(url, context, next) {
     if (
-      /\/dist\/app\/config\/(?:runtime|database|api|notifications|queue|delivery|mail)\.js$/.test(
+      /\/dist\/app\/config\/(?:runtime|database|api|notifications|queue|delivery|mail|media)\.js$/.test(
         url
       ) &&
       mode !== 'success'

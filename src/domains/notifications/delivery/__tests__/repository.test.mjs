@@ -148,3 +148,8 @@ test('cancelling all pending purposes does not add purpose filter', async () => 
   await r.cancelPending('owner', session)
   assert(!('purpose' in m.Model.updateMany.mock.calls[0].arguments[0]))
 })
+test('enqueue lookup retains its transaction and private fingerprint projection', async () => {
+  await r.findEnqueued('job', session)
+  assert.equal(m.query.session.mock.calls[0].arguments[0], session)
+  assert.equal(m.query.select.mock.calls[0].arguments[0], '+fingerprint')
+})

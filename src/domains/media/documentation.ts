@@ -11,7 +11,7 @@ export const createMediaDocumentation = (): OpenApiPathsDto => ({
       operationId: 'uploadImage',
       summary: 'Upload an owned image',
       description:
-        'Upload exactly one file part and no extra form fields. Only single-frame JPEG/PNG images are accepted after decoding; unsupported MIME types, invalid images, and MIME/content mismatches return 400. The API generates an orientation-aware 150×150 WebP conversion. Originals remain private; the returned image ID belongs to the uploader. The byte limit is configured with MAX_UPLOAD_BYTES (10 MiB by default); oversized files return 413.',
+        'Upload exactly one file part and no extra form fields. Only single-frame JPEG/PNG images are accepted after decoding; unsupported MIME types, invalid images, and MIME/content mismatches return 400. The API generates an orientation-aware 150×150 WebP conversion. Originals remain private; the returned image ID belongs to the uploader. The byte limit is configured with MAX_UPLOAD_BYTES (10 MiB by default); oversized files return 413. An owner quota (20 files / 100 MiB by default) is reserved before writing, including in-flight files and conversion capacity; quota failures return 413. Unattached uploads expire according to the configured retention policy.',
       tag: 'Media',
       access: 'authenticated',
       response: uploadImageResponseSchema,
@@ -46,7 +46,7 @@ export const createMediaDocumentation = (): OpenApiPathsDto => ({
       operationId: 'updateAvatar',
       summary: 'Attach an owned image as avatar',
       description:
-        'The image must have been uploaded by this account. Detaches the previous avatar without deleting its image, allowing reuse.',
+        'The image must have been uploaded by this account. Detaches the previous avatar without deleting its image, allowing reuse until the unused-media retention period expires. Uploading/deleting images cannot be attached.',
       tag: 'Media',
       access: 'authenticated',
       body: updateAvatarSchema,

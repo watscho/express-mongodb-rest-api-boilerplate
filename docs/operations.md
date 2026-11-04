@@ -149,3 +149,13 @@ A restore is a coordinated data, secret, file, and delivery decision. The reposi
 6. Resume only compatible producers/workers after the agreed acceptance steps. Observe queue age, failures, worker freshness, API readiness, and media access; record actual results and unresolved uncertainty.
 
 Backups and recovery procedures should identify the artifact, schema/index state, storage snapshot, secret recovery path, Redis/session policy, and responsible operator. Provider delivery/bounce records may be needed to investigate SMTP acceptance outside the restored database.
+
+## Media cleanup
+
+Run `yarn media:cleanup --help` without credentials for options. After building, use `yarn media:cleanup:prod --limit 100` (valid range 1–1000) with the database environment and the same persistent storage mount as the API. This role needs MongoDB and filesystem access, but no JWT, Redis, queue encryption key, or SMTP credentials. The command prints `{ deleted, orphaned, failed }`; a failed deletion exits nonzero and is retried by subsequent runs. The limit bounds record deletions and orphan deletions separately.
+
+Schedule this command hourly using the deployment scheduler, for example `0 * * * * cd /app && node dist/app/runtime/commands/media.js --limit 100` with the intended role environment supplied by the scheduler. The application does not install a system cron entry. With Compose, prepare `ops/environments/media.env` from its example, then run `docker compose -f ops/compose.production.yml --profile operations run --rm media-cleanup` from the deployment host scheduler.
+
+Cleanup removes expired unattached uploads and expired upload reservations, and retries deletion tombstones. Both attachment fields must be absent for unused-media eligibility; attached or partially referenced records are preserved. It also scans application-generated UUID filenames and conversions/temp files older than the retention period, removing them only if no media record refers to their original filename. Unknown legacy filenames remain quarantined for explicit operator review. No filesystem unlink occurs inside a retryable MongoDB transaction. Concurrent claim/attachment writes contend on the same media document; an image claimed for deletion cannot be newly attached.
+
+Account deletion now leaves media deletion markers until filesystem removal succeeds. Monitor cleanup failures, database tombstones, disk space, and the scheduler itself; a successful API heartbeat does not prove cleanup is scheduled. Back up the database and persistent files consistently before a deployment or retention-policy change.

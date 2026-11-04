@@ -28,7 +28,7 @@ for (const role of ['api', 'mail-worker', 'database', 'mail:queue'])
 test('configuration aggregates all profile failures', () => {
   const result = probe('invalid', 'api')
   assert.equal(result.name, 'ConfigurationError')
-  assert.equal(result.issues.length, 6)
+  assert.equal(result.issues.length, 7)
 })
 test('unexpected import failures retain original exception', () => {
   const result = probe('unexpected', 'api')

@@ -1,6 +1,8 @@
 import { database } from '../../app/database/mongodb.ts'
 import type { ClientSession } from 'mongoose'
 import { compare } from 'bcrypt'
+import { consumeAccountBudget } from './admission.ts'
+import { credentialsSchema } from './schemas.ts'
 import { redis } from '../../app/database/redis.ts'
 import { AppError } from '../../app/http/errors.ts'
 import { userService } from '../users/index.ts'
@@ -28,6 +30,7 @@ const confirmPassword = async (
   user: AccountDto,
   password: string
 ): Promise<void> => {
+  await consumeAccountBudget(user.email, 'confirmation')
   const current = await userService.getCredentialsById(user.id)
   if (
     !current ||
@@ -47,7 +50,9 @@ const invalidateSecurityLinks = async (
 }
 
 export const authService = {
-  async signIn({ email, password }: CredentialsDto): Promise<AccessTokenDto> {
+  async signIn(input: CredentialsDto): Promise<AccessTokenDto> {
+    const { email, password } = credentialsSchema.parse(input)
+    await consumeAccountBudget(email, 'sign-in')
     const user = await userService.getCredentialsByEmail(email)
     if (!user || !(await compare(password, user.password)))
       throw new AppError(401, 'auth.invalid_credentials')
@@ -91,26 +96,31 @@ export const authService = {
     const { accessToken, expiresIn: expiresAt } = createEmailToken(
       RESET_PASSWORD_LIFETIME_DAYS
     )
-    await database.transaction(async session => {
-      const current = await userService.lock(user.id, session)
-      if (!current || current.email !== email) return
-      await notificationService.cancelPending(user.id, session, [
-        'resetPassword'
-      ])
-      await tokenRepository.createReset(
-        {
-          userId: user.id,
-          accessToken,
-          expiresIn: expiresAt
-        },
-        session
-      )
-      await notificationService.enqueueAccount(
-        'resetPassword',
-        { email, accessToken, language, ownerId: user.id, expiresAt },
-        session
-      )
-    })
+    try {
+      await database.transaction(async session => {
+        const current = await userService.lock(user.id, session)
+        if (!current || current.email !== email) return
+        await notificationService.cancelPending(user.id, session, [
+          'resetPassword'
+        ])
+        await tokenRepository.createReset(
+          {
+            userId: user.id,
+            accessToken,
+            expiresIn: expiresAt
+          },
+          session
+        )
+        await notificationService.enqueueAccount(
+          'resetPassword',
+          { email, accessToken, language, ownerId: user.id, expiresAt },
+          session
+        )
+      })
+    } catch (error) {
+      // A rejected notification rolls back token replacement and retains the generic reset response.
+      if (!(error instanceof AppError && error.status === 429)) throw error
+    }
   },
   async newPassword(
     accessToken: string,

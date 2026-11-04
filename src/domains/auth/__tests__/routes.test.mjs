@@ -13,7 +13,7 @@ const app = f.app(
   })
 )
 const email = 'unit@example.test',
-  password = 'secret123'
+  password = 'juniper orbit velvet canoe'
 const token = 'a'.repeat(96)
 beforeEach(() => {
   for (const fn of Object.values(f.auth)) fn.mock.resetCalls()
@@ -28,7 +28,7 @@ for (const [path, body, method, service] of [
   ['/user/update/email', { email, password }, 'POST', 'updateEmail'],
   [
     '/user/update/password',
-    { oldPassword: password, newPassword: 'updated123' },
+    { oldPassword: password, newPassword: 'copper galaxy maple lantern' },
     'POST',
     'updatePassword'
   ],

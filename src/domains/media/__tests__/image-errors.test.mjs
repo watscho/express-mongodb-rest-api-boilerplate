@@ -4,6 +4,7 @@ import { replace } from '../../../__tests__/helpers.mjs'
 let failure
 mock.module('node:fs/promises', {
   exports: {
+    stat: async () => ({ size: 0 }),
     access: async () => {
       throw failure
     },

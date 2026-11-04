@@ -124,3 +124,14 @@ test('internal errors report matched route while keeping response value-free', (
   )
   assert.equal(res.statusCode, 500)
 })
+test('security budget errors include Retry-After without changing the response envelope', () => {
+  const res = response()
+  errorMiddleware(
+    new AppError(429, 'auth.account_rate_limited', undefined, 60),
+    { method: 'POST' },
+    res,
+    () => {}
+  )
+  assert.equal(res.headers['Retry-After'], '60')
+  assert.equal(res.payload.status, 429)
+})

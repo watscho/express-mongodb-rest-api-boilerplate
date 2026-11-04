@@ -53,6 +53,7 @@ export const modelDouble = () => {
     }
   }
   for (const name of [
+    'aggregate',
     'findById',
     'findOne',
     'find',

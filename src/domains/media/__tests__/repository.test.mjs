@@ -11,25 +11,29 @@ test('all image lookups and mutations include owner scope', async () => {
   assert.deepEqual(m.Model.findOne.mock.calls[0].arguments[0], {
     owner: 'owner',
     refType: 'User',
-    refId: 'owner'
+    refId: 'owner',
+    status: { $nin: ['uploading', 'deleting'] }
   })
   assert.equal(await r.existsOwned('image', 'owner', session), false)
   assert.deepEqual(m.Model.exists.mock.calls[0].arguments[0], {
     _id: 'image',
-    owner: 'owner'
+    owner: 'owner',
+    status: { $nin: ['uploading', 'deleting'] }
   })
   await r.listOwned('owner', session)
   assert.deepEqual(m.Model.find.mock.calls[0].arguments[0], { owner: 'owner' })
   await r.attachAvatar('image', 'owner', session)
   assert.deepEqual(m.Model.updateOne.mock.calls[0].arguments[0], {
     _id: 'image',
-    owner: 'owner'
+    owner: 'owner',
+    status: { $nin: ['uploading', 'deleting'] }
   })
   await r.detachAvatar('owner', session)
   assert.equal(m.Model.updateMany.mock.calls[0].arguments[0].owner, 'owner')
   await r.deleteOwned('owner', session)
-  assert.deepEqual(m.Model.deleteMany.mock.calls[0].arguments, [
+  assert.deepEqual(m.Model.updateMany.mock.calls.at(-1).arguments, [
     { owner: 'owner' },
+    { $set: { status: 'deleting' } },
     { session }
   ])
 })
@@ -40,4 +44,41 @@ test('creation saves owner and session; exists returns boolean', async () => {
   })
   assert.deepEqual(m.save.mock.calls[0].arguments, [{ session }])
   assert.equal(await r.existsOwned('image', 'owner', session), true)
+})
+test('quota usage counts every owned state and reserves bounded capacity', async () => {
+  m.setResult([])
+  assert.deepEqual(await r.usage('a'.repeat(24), session), {
+    count: 0,
+    bytes: 0
+  })
+  m.setResult([{ count: 2, bytes: 100 }])
+  assert.deepEqual(await r.usage('a'.repeat(24), session), {
+    count: 2,
+    bytes: 100
+  })
+  await r.reserve('filename', 'owner', session)
+  await r.reservation('filename', 'owner')
+  assert.equal(m.Model.findOne.mock.calls[0].arguments[0].status, 'uploading')
+  await r.finalize({ filename: 'filename', size: 10 }, 'owner', session)
+  assert.equal(
+    m.Model.findOneAndUpdate.mock.calls[0].arguments[0].status,
+    'uploading'
+  )
+  await r.markFailed('filename', 'owner')
+  assert.equal(
+    m.Model.findOneAndUpdate.mock.calls[1].arguments[1].$set.status,
+    'deleting'
+  )
+  await r.removeDeleted('image')
+  assert.deepEqual(m.Model.deleteOne.mock.calls[0].arguments[0], {
+    _id: 'image',
+    status: 'deleting'
+  })
+  await r.cleanupCandidates(new Date(), 10)
+  await r.claimCleanup('image', new Date())
+  assert(
+    m.Model.findOneAndUpdate.mock.calls[2].arguments[0].$or[2].refType
+      .$exists === false
+  )
+  await r.hasFilename('filename')
 })

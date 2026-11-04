@@ -5,9 +5,14 @@ import {
   methods,
   reset,
   session,
-  user
+  user,
+  database
 } from '../../../../__tests__/helpers.mjs'
-const repo = methods(['enqueue'])
+replace('app/database/mongodb.js', { database })
+replace('domains/notifications/delivery/budget.js', {
+  admitEmail: async () => {}
+})
+const repo = methods(['enqueue', 'findEnqueued'])
 replace('domains/notifications/delivery/repository.js', {
   deliveryRepository: repo
 })
@@ -85,4 +90,39 @@ test('missing job and idempotency conflicts propagate', async () => {
     status: 409,
     messageKey: 'notifications.idempotency_conflict'
   })
+})
+test('idempotent replay returns the existing matching job before budget admission', async () => {
+  await enqueueTemplate(input, {
+    session,
+    options: { idempotencyKey: 'replay' }
+  })
+  const saved = repo.enqueue.mock.calls[0].arguments[0]
+  repo.findEnqueued.mock.mockImplementation(async () => ({
+    _id: saved.id,
+    status: 'sent',
+    fingerprint: saved.fingerprint
+  }))
+  assert.equal(
+    (
+      await enqueueTemplate(input, {
+        session,
+        options: { idempotencyKey: 'replay' }
+      })
+    ).status,
+    'sent'
+  )
+  assert.equal(repo.enqueue.mock.callCount(), 1)
+  repo.findEnqueued.mock.mockImplementation(async () => ({
+    _id: saved.id,
+    status: 'sent',
+    fingerprint: 'different'
+  }))
+  await assert.rejects(
+    () =>
+      enqueueTemplate(input, {
+        session,
+        options: { idempotencyKey: 'replay' }
+      }),
+    { status: 409 }
+  )
 })
