@@ -3,3 +3,5 @@ dist
 storage
 yarn.lock
 .yarn/
+
+coverage/

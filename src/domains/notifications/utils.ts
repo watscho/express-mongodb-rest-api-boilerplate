@@ -7,11 +7,10 @@ export const resolveEmailLanguage = (
   const match = (value: string) => {
     let canonical: string | undefined
     try {
-      canonical = Intl.getCanonicalLocales(value)[0]?.toLowerCase()
+      canonical = Intl.getCanonicalLocales(value)[0]!.toLowerCase()
     } catch {
       return undefined
     }
-    if (!canonical) return undefined
     return (
       available.find(language => language.toLowerCase() === canonical) ??
       available.find(
@@ -25,7 +24,7 @@ export const resolveEmailLanguage = (
   const preferences = (preference ?? '')
     .split(',')
     .map((part, order) => {
-      const [language = '', ...parameters] = part.trim().split(';')
+      const [language, ...parameters] = part.trim().split(';')
       const qualityParameter = parameters.find(value =>
         value.trim().startsWith('q=')
       )
@@ -33,7 +32,7 @@ export const resolveEmailLanguage = (
         qualityParameter === undefined
           ? 1
           : Number(qualityParameter.trim().slice(2))
-      return { language: language.trim(), quality, order }
+      return { language: language!.trim(), quality, order }
     })
     .filter(
       value =>

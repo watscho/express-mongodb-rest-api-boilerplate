@@ -97,7 +97,7 @@ export const renderNotification = async (
     language,
     clientUrl,
     actionUrl,
-    direction: ['ar', 'he', 'fa', 'ur'].includes(language.split('-')[0] ?? '')
+    direction: ['ar', 'he', 'fa', 'ur'].includes(language.split('-')[0]!)
       ? 'rtl'
       : 'ltr'
   }

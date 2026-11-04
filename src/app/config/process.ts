@@ -37,8 +37,6 @@ export const loadProcessConfiguration = async (
     error => !(error instanceof ConfigurationError)
   )
   if (unexpected >= 0) throw failures[unexpected]
-  const issues = failures.flatMap(error =>
-    error instanceof ConfigurationError ? error.issues : []
-  )
+  const issues = failures.flatMap(error => (error as ConfigurationError).issues)
   if (issues.length) throw new ConfigurationError(issues)
 }

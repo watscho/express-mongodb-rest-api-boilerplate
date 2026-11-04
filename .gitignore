@@ -16,3 +16,5 @@ src/storage/
 ops/environments/*.env
 ops/secrets/*
 !ops/secrets/README.md
+
+coverage/

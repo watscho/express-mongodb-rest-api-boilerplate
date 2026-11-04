@@ -1,6 +1,6 @@
 # Developer, QA, and release handoff
 
-Use this guide when transferring a feature to another developer, QA, or an operator. It describes the API, environment, scenarios, and evidence the recipient needs. The repository currently has no automated test suite or separate QA service.
+Use this guide when transferring a feature to another developer, QA, or an operator. It describes the API, environment, scenarios, and evidence the recipient needs. The repository includes colocated unit tests; it has no separate QA service.
 
 This document defines a handoff process and suggested manual scenarios. It does not record those scenarios as executed. The current local tooling results are summarized in the [README](../README.md#validation-status); environment acceptance requires its own evidence.
 
@@ -25,6 +25,7 @@ Do not include real credentials, bearer/email tokens, recipient content, or prod
 The available tooling commands are:
 
 ```sh
+yarn test
 yarn typecheck
 yarn lint
 yarn format:check
@@ -33,7 +34,7 @@ yarn build
 
 These check types, lint, formatting, and compilation/assets; they do not establish HTTP behavior, database migrations, browser rendering, SMTP delivery, or operational readiness. Record the artifact and actual exit results. Do not report `Passed` for a command that was only suggested or documented. Recheck affected areas after a change when authorized and necessary.
 
-There is no `yarn test` command. Adding/running an automated suite is separate work; do not invent a passing test status or treat its absence as test coverage.
+`yarn test` builds and runs the unit suite without external services. Tests live in `__tests__` beside their owning modules. `yarn test:coverage` instruments all application modules and enforces 100% statements, branches, functions, and lines, including initially unloaded modules. Unit tests do not establish database transaction behavior or external-provider acceptance. See [testing](testing.md).
 
 ## Prepare a manual acceptance environment
 

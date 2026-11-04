@@ -49,7 +49,7 @@ export const createDocumentationRouter = () => {
   if (!apiEnv.DOCS_ENABLED) return router
   const require = createRequire(import.meta.url)
   const assets = dirname(require.resolve('swagger-ui-dist/package.json'))
-  const spec = createOpenApiDocument(new URL(apiEnv.APP_URL).pathname || '/')
+  const spec = createOpenApiDocument(new URL(apiEnv.APP_URL).pathname)
   const sendSpecification: RequestHandler = (_req, res) => {
     res.json(spec)
   }

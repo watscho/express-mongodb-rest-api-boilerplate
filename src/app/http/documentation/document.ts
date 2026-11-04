@@ -24,7 +24,7 @@ export const createOpenApiDocument = (serverUrl = '/'): OpenApiDocumentDto => {
   const { version, description, homepage, license } = metadata.data
   return {
     openapi: '3.1.2',
-    jsonSchemaDialect: 'https://json-schema.org/draft/2020-12/schema',
+    jsonSchemaDialect: 'https://spec.openapis.org/oas/3.1/dialect/base',
     info: {
       title: 'Express MongoDB REST API',
       version,

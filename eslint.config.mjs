@@ -11,7 +11,15 @@ const typescriptImports = {
 }
 
 export default defineConfig(
-  { ignores: ['dist/**', 'node_modules/**', 'storage/**', '.yarn/**'] },
+  {
+    ignores: [
+      'dist/**',
+      'coverage/**',
+      'node_modules/**',
+      'storage/**',
+      '.yarn/**'
+    ]
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

@@ -17,7 +17,7 @@ export const fingerprintDelivery = (input: unknown): string =>
         value !== null && typeof value === 'object' && !Array.isArray(value)
           ? Object.fromEntries(
               Object.entries(value).sort(([left], [right]) =>
-                left < right ? -1 : left > right ? 1 : 0
+                left < right ? -1 : 1
               )
             )
           : value

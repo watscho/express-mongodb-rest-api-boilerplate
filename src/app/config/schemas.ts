@@ -43,8 +43,7 @@ const tokenLifetime = z
   .default('24h')
   .transform(value =>
     Math.floor(
-      Number.parseInt(value, 10) *
-        (secondsPerUnit[value.replace(/^\d+/, '')] ?? 0)
+      Number.parseInt(value, 10) * secondsPerUnit[value.replace(/^\d+/, '')]!
     )
   )
   .pipe(z.number().int().positive())

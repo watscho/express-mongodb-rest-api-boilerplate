@@ -24,7 +24,7 @@ const emailLanguageSchema = z
       return false
     }
   }, 'notifications.invalid_language')
-  .transform(value => Intl.getCanonicalLocales(value)[0] ?? value)
+  .transform(value => Intl.getCanonicalLocales(value)[0]!)
 export const emailTranslationsSchema = z.record(
   emailLanguageSchema,
   z.record(z.string().min(1), z.string())

@@ -253,6 +253,8 @@ For new domains and endpoints, follow the [developer guide](docs/development.md)
 | Command                                                  | Purpose                                                      |
 | -------------------------------------------------------- | ------------------------------------------------------------ |
 | `yarn dev` / `yarn dev:mail`                             | Watch API / mail-worker source                               |
+| `yarn test`                                              | Build and run colocated unit tests without external services |
+| `yarn test:coverage`                                     | Enforce 100% Istanbul coverage for all application modules   |
 | `yarn typecheck`                                         | Check source types with TypeScript 7, without emitting files |
 | `yarn build`                                             | Compile API, worker, and operator commands; copy templates   |
 | `yarn start` / `yarn start:mail`                         | Run the compiled API / worker                                |
@@ -320,18 +322,21 @@ The [documentation index](docs/README.md) provides reading paths for developers,
 
 ## Validation status
 
-Local results under Node.js **26.13.0**, recorded **2026-11-01**:
+Local results under Node.js **26.13.0**. Tooling and dependency-install results below were recorded **2026-11-01**; unit and runtime checks were added **2026-11-04**:
 
-| Area                                                                                                      | Status                                                                                         |
-| --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| TypeScript 7 typecheck and build                                                                          | Passed                                                                                         |
-| ESLint and Prettier                                                                                       | Passed                                                                                         |
-| Yarn 4 immutable install / production dependency focus                                                    | Passed with lifecycle/build execution disabled; production tools pruned and lockfile unchanged |
-| Automated tests                                                                                           | Not run                                                                                        |
-| Compiled OpenAPI export                                                                                   | Generated; 18 operations / 17 paths match explicit source registrations                        |
-| API/worker runtime, Swagger UI, generated clients, database migrations/indexes, containers, SMTP delivery | Not validated                                                                                  |
+| Area                                                                                                              | Status                                                                                                           |
+| ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| TypeScript 7 typecheck and build                                                                                  | Passed                                                                                                           |
+| ESLint and Prettier                                                                                               | Passed                                                                                                           |
+| Yarn 4 immutable install / production dependency focus                                                            | Passed with lifecycle/build execution disabled; production tools pruned and lockfile unchanged                   |
+| Unit tests (2026-11-04)                                                                                           | 369 passed; colocated `__tests__` folders, no external services                                                  |
+| Compiled OpenAPI export                                                                                           | Generated; 18 operations / 17 paths match explicit source registrations                                          |
+| Local API/worker and account workflows (2026-11-04)                                                               | 53 HTTP/SMTP checks passed with MongoDB 8 replica set, isolated Redis, and Mailpit; new database indexes created |
+| Production deployment, generated clients, legacy migrations, application containers, external SMTP/inbox delivery | Not validated                                                                                                    |
 
-These results cover local tooling, artifact generation, and source-level correspondence. Target-environment acceptance remains part of deployment.
+Unit tests live beside the owning modules in `__tests__/*.test.mjs`; shared fixtures are in `src/__tests__`. Run `yarn test` after changes. The runner builds TypeScript first and tests the emitted JavaScript, including copied email templates. Node module mocks isolate MongoDB, Redis, and SMTP; temporary image files are removed after tests. The module-mocking API requires the experimental flag supplied by the scripts.
+
+`yarn test:coverage` enforces 100% statements, branches, functions, and lines across every compiled application module, including unloaded modules. Instrumentation runs only in tests; reports are written to `coverage/index.html` and `coverage/coverage-summary.json`. See [testing](docs/testing.md) for scope and runtime evidence. Target-environment acceptance remains part of deployment.
 
 ## License
 

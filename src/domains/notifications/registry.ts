@@ -37,7 +37,7 @@ export const registerEmailTemplate = (
       language,
       {
         ...(layoutTranslations[language] ??
-          layoutTranslations[language.split('-')[0] ?? 'en'] ??
+          layoutTranslations[language.split('-')[0]!] ??
           layoutTranslations[result.data.defaultLanguage] ??
           en.layout),
         ...dictionary
