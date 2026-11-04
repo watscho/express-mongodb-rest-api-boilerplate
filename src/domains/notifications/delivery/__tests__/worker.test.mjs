@@ -131,9 +131,10 @@ for (const [mode, status] of [
   ['lastAttempt', 'failed']
 ])
   test(`SMTP ${mode} follows retry policy`, async () => {
-    if (mode === 'deadline') job.expiresAt = new Date(Date.now() + 20)
+    if (mode === 'deadline') job.expiresAt = new Date(Date.now() + 60000)
     if (mode === 'lastAttempt') job.attempts = 2
     mail.sendMail.mock.mockImplementation(async () => {
+      if (mode === 'deadline') job.expiresAt.setTime(Date.now() + 1)
       throw {
         failure: {
           code: mode === 'permanent' ? 'smtp.permanent' : 'smtp.temporary',

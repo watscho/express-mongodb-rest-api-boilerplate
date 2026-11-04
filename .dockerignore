@@ -13,3 +13,6 @@ public
 .DS_Store
 ops/secrets
 ops/environments/*.env
+
+coverage
+**/__tests__

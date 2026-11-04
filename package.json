@@ -60,8 +60,10 @@
     "mail:queue:prod": "node --enable-source-maps dist/app/runtime/commands/mail.js",
     "db:indexes:prod": "node --enable-source-maps dist/app/runtime/commands/database/indexes.js",
     "db:migrate:legacy:prod": "node --enable-source-maps dist/app/runtime/commands/database/migrate.js",
-    "test": "yarn build && node --experimental-test-module-mocks --import ./src/__tests__/setup.mjs --test --test-timeout=30000 'src/**/__tests__/*.test.mjs'",
-    "test:coverage": "yarn build && node scripts/coverage.mjs"
+    "test": "node scripts/test.mjs",
+    "test:coverage": "node scripts/test.mjs --coverage",
+    "test:coverage:report": "node scripts/test.mjs --coverage --report-only",
+    "check": "node scripts/check.mjs"
   },
   "dependencies": {
     "bcrypt": "6.0.0",

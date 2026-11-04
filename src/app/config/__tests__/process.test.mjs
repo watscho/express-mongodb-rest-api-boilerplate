@@ -2,14 +2,22 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
+import { nodeArguments } from '../../../../scripts/testing/config.mjs'
 const fixture = fileURLToPath(
   new URL('./fixtures/process-probe.mjs', import.meta.url)
 )
 function probe(mode, role) {
   const result = spawnSync(
     process.execPath,
-    [...process.execArgv, fixture, mode, role],
-    { encoding: 'utf8' }
+    [
+      ...nodeArguments({
+        coverageDirectory: process.env.APP_TEST_COVERAGE_DIR
+      }),
+      fixture,
+      mode,
+      role
+    ],
+    { encoding: 'utf8', timeout: 10000 }
   )
   assert.equal(result.status, 0, result.stderr)
   return JSON.parse(result.stdout)

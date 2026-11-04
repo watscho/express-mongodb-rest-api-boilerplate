@@ -107,7 +107,8 @@ test('stats returns counts age and active workers without message content', asyn
   assert.equal(stats.counts.failed, 0)
   assert.equal(Object.keys(stats.counts).length, 6)
 })
-test('queue defaults and oldest backlog age are reported', async () => {
+test('queue defaults and oldest backlog age are reported', async context => {
+  context.mock.timers.enable({ apis: ['Date'], now: Date.UTC(2026, 0, 1) })
   outbox.setResult([])
   assert.deepEqual((await o.list()).items, [])
   const q = {
@@ -128,5 +129,5 @@ test('queue defaults and oldest backlog age are reported', async () => {
   outbox.Model.findOne.mock.mockImplementation(() => q)
   outbox.setResult(0)
   workers.setResult(0)
-  assert((await o.stats()).oldestQueuedAgeMs >= 10000)
+  assert.equal((await o.stats()).oldestQueuedAgeMs, 10000)
 })

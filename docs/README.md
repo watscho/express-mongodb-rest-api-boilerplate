@@ -4,14 +4,16 @@ Start with the guide for your task. The root [README](../README.md) provides ins
 
 ## Reading paths
 
-| Task                              | Read in this order                                                                                                                     |
-| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Run a new installation            | [Quick start](../README.md#quick-start) → [Configuration](configuration.md) → [Database](database.md)                                  |
-| Connect a frontend/client         | [Client integration](client-integration.md) → [API message keys](api-message-keys.md) → [OpenAPI/Swagger](openapi.md)                  |
-| Add a domain or endpoint          | [Architecture](architecture.md) → [Developer guide](development.md) → [QA/handoff](handoff.md)                                         |
-| Customize email                   | [Notifications](notifications.md) → [Template catalog](../src/domains/notifications/templates/README.md) → [Operations](operations.md) |
-| Upgrade a 1.x installation        | [Migration](migration.md) → [Database](database.md) → [Deployment](deployment.md)                                                      |
-| Deploy or investigate an incident | [Deployment](deployment.md) → [Operations](operations.md) → [Configuration](configuration.md)                                          |
+| Task                                                                                           | Read in this order                                                                                                                     |
+| ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Run a new installation                                                                         | [Quick start](../README.md#quick-start) → [Configuration](configuration.md) → [Database](database.md)                                  |
+| Connect a frontend/client                                                                      | [Client integration](client-integration.md) → [API message keys](api-message-keys.md) → [OpenAPI/Swagger](openapi.md)                  |
+| Add a domain or endpoint                                                                       | [Testing and coverage](testing.md)                                                                                                     | Test structure, quality command, 100% application coverage, report evidence and CI |
+| [Architecture](architecture.md) → [Developer guide](development.md) → [QA/handoff](handoff.md) |
+| Verify changes                                                                                 | [Testing and coverage](testing.md) → [QA/handoff](handoff.md) → [Tooling/CI](tooling.md)                                               |
+| Customize email                                                                                | [Notifications](notifications.md) → [Template catalog](../src/domains/notifications/templates/README.md) → [Operations](operations.md) |
+| Upgrade a 1.x installation                                                                     | [Migration](migration.md) → [Database](database.md) → [Deployment](deployment.md)                                                      |
+| Deploy or investigate an incident                                                              | [Deployment](deployment.md) → [Operations](operations.md) → [Configuration](configuration.md)                                          |
 
 ## Guide ownership
 

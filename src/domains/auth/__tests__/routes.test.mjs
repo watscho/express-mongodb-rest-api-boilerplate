@@ -1,4 +1,4 @@
-import { test } from 'node:test'
+import { test, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import { routeFixture } from '../../../__tests__/routes.mjs'
 import { request } from '../../../__tests__/http.mjs'
@@ -15,6 +15,9 @@ const app = f.app(
 const email = 'unit@example.test',
   password = 'secret123'
 const token = 'a'.repeat(96)
+beforeEach(() => {
+  for (const fn of Object.values(f.auth)) fn.mock.resetCalls()
+})
 for (const [path, body, method, service] of [
   ['/auth/sign-in', { email, password }, 'POST', 'signIn'],
   ['/auth/sign-up', { email, password }, 'POST', 'signUp'],
@@ -43,10 +46,7 @@ for (const [path, body, method, service] of [
       }
     })
     assert.equal(res.status, 200, res.text)
-    assert.equal(
-      f.auth[service].mock.callCount(),
-      service === 'signOut' ? (method === 'POST' ? 1 : 2) : 1
-    )
+    assert.equal(f.auth[service].mock.callCount(), 1)
     if (
       [
         'signUp',

@@ -4,4 +4,4 @@ storage
 yarn.lock
 .yarn/
 
-coverage/
+/coverage/

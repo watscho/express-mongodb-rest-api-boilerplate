@@ -23,7 +23,7 @@ Use `yarn install --immutable` for existing lockfiles and CI. It fails if instal
 
 Only the pinned CLI and its license are committed under `.yarn/`. Project-local caches and install state are ignored. Vendored tool code is excluded from ESLint/Prettier and must remain the unmodified upstream artifact. The application still uses ordinary `node_modules`; no Plug'n'Play loader or editor SDK setup is needed.
 
-Local migration used `install --mode=skip-build`, which skips dependency lifecycle/build execution. This is different from a normal fresh installation: normal installation can run required native setup for bcrypt, sharp, esbuild, and platform packages. Skipping builds is useful for dependency review but does not qualify native runtime behavior. Tests are separate work; no test command is introduced.
+Local migration used `install --mode=skip-build`, which skips dependency lifecycle/build execution. This is different from a normal fresh installation: normal installation can run required native setup for bcrypt, sharp, esbuild, and platform packages. Skipping builds is useful for dependency review but does not qualify native runtime behavior. Current tests and the full quality gate are documented in [testing](testing.md); the earlier dependency migration alone did not validate runtime behavior.
 
 ### TypeScript compatibility note
 
@@ -41,7 +41,7 @@ The final runtime image receives compiled output, production `node_modules`, pac
 
 ## CI and future updates
 
-Use the committed CLI directly when a CI runner has no configured launcher. After installation, the existing `typecheck`, `lint`, `format:check`, and `build` scripts remain available. Do not use Classic install flags such as `--production=true` or `--non-interactive`; [Yarn focus](https://yarnpkg.com/cli/workspaces/focus) handles production dependency selection.
+Use the committed CLI directly when a CI runner has no configured launcher. After installation, run `node .yarn/releases/yarn-4.18.1.cjs check` for formatting, lint, the TypeScript build, tests, and strict coverage. The same command is configured in the GitHub Actions Quality workflow. Individual `typecheck`, `lint`, `format:check`, `build`, and `test` scripts remain available. Do not use Classic install flags such as `--production=true` or `--non-interactive`; [Yarn focus](https://yarnpkg.com/cli/workspaces/focus) handles production dependency selection.
 
 To intentionally update Yarn later, use `yarn set version stable --yarn-path`, inspect the selected release, and update the Docker CLI paths and versioned instructions together. Review generated migration settings; this project does not need blanket Git-repository approvals or a disabled package-age policy. Regenerate the lockfile only when needed, then confirm an immutable install leaves it unchanged.
 

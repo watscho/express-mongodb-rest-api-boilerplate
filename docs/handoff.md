@@ -22,7 +22,7 @@ Do not include real credentials, bearer/email tokens, recipient content, or prod
 
 ## Local developer checks
 
-The available tooling commands are:
+Use `yarn check` for the complete local quality gate, or run the focused commands separately:
 
 ```sh
 yarn test

@@ -250,20 +250,22 @@ Relative source imports use `.ts`; TypeScript rewrites them to `.js` in `dist/`.
 
 For new domains and endpoints, follow the [developer guide](docs/development.md): schemas → DTOs → persistence → service → middleware/controller → routes → Swagger, including registration points and extension rules. Use the [QA and release handoff guide](docs/handoff.md) to transfer the feature with explicit acceptance expectations and evidence.
 
-| Command                                                  | Purpose                                                      |
-| -------------------------------------------------------- | ------------------------------------------------------------ |
-| `yarn dev` / `yarn dev:mail`                             | Watch API / mail-worker source                               |
-| `yarn test`                                              | Build and run colocated unit tests without external services |
-| `yarn test:coverage`                                     | Enforce 100% Istanbul coverage for all application modules   |
-| `yarn typecheck`                                         | Check source types with TypeScript 7, without emitting files |
-| `yarn build`                                             | Compile API, worker, and operator commands; copy templates   |
-| `yarn start` / `yarn start:mail`                         | Run the compiled API / worker                                |
-| `yarn lint` / `yarn lint:fix`                            | Run ESLint / apply fixes                                     |
-| `yarn format` / `yarn format:check`                      | Write Prettier formatting / check formatting                 |
-| `yarn docs:export` / `yarn docs:export:prod`             | Export OpenAPI from source / compiled code                   |
-| `yarn mail:queue` / `yarn mail:queue:prod`               | Inspect queue metadata or explicitly retry an eligible job   |
-| `yarn db:indexes` / `yarn db:indexes:prod`               | Preflight conflicts and create missing collections/indexes   |
-| `yarn db:migrate:legacy` / `yarn db:migrate:legacy:prod` | Run the explicit legacy-data migration                       |
+| Command                                                  | Purpose                                                        |
+| -------------------------------------------------------- | -------------------------------------------------------------- |
+| `yarn dev` / `yarn dev:mail`                             | Watch API / mail-worker source                                 |
+| `yarn check`                                             | Run formatting, lint, type-safe build, tests and 100% coverage |
+| `yarn test`                                              | Build and run colocated unit tests without external services   |
+| `yarn test:coverage`                                     | Enforce 100% Istanbul coverage for all application modules     |
+| `yarn test:coverage:report`                              | Generate coverage diagnostics without enforcing the threshold  |
+| `yarn typecheck`                                         | Check source types with TypeScript 7, without emitting files   |
+| `yarn build`                                             | Compile API, worker, and operator commands; copy templates     |
+| `yarn start` / `yarn start:mail`                         | Run the compiled API / worker                                  |
+| `yarn lint` / `yarn lint:fix`                            | Run ESLint / apply fixes                                       |
+| `yarn format` / `yarn format:check`                      | Write Prettier formatting / check formatting                   |
+| `yarn docs:export` / `yarn docs:export:prod`             | Export OpenAPI from source / compiled code                     |
+| `yarn mail:queue` / `yarn mail:queue:prod`               | Inspect queue metadata or explicitly retry an eligible job     |
+| `yarn db:indexes` / `yarn db:indexes:prod`               | Preflight conflicts and create missing collections/indexes     |
+| `yarn db:migrate:legacy` / `yarn db:migrate:legacy:prod` | Run the explicit legacy-data migration                         |
 
 Run `yarn build` before compiled commands. Build output is in `dist/`; uploads remain in the configured persistent storage directory. Queue retry, index creation, and legacy migration change state; select the intended environment before invoking them.
 
@@ -329,7 +331,7 @@ Local results under Node.js **26.13.0**. Tooling and dependency-install results 
 | TypeScript 7 typecheck and build                                                                                  | Passed                                                                                                           |
 | ESLint and Prettier                                                                                               | Passed                                                                                                           |
 | Yarn 4 immutable install / production dependency focus                                                            | Passed with lifecycle/build execution disabled; production tools pruned and lockfile unchanged                   |
-| Unit tests (2026-11-04)                                                                                           | 369 passed; colocated `__tests__` folders, no external services                                                  |
+| Unit tests (2026-11-04)                                                                                           | 375 passed; colocated `__tests__` folders, no external services                                                  |
 | Compiled OpenAPI export                                                                                           | Generated; 18 operations / 17 paths match explicit source registrations                                          |
 | Local API/worker and account workflows (2026-11-04)                                                               | 53 HTTP/SMTP checks passed with MongoDB 8 replica set, isolated Redis, and Mailpit; new database indexes created |
 | Production deployment, generated clients, legacy migrations, application containers, external SMTP/inbox delivery | Not validated                                                                                                    |
